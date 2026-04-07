@@ -1,5 +1,5 @@
-import { Sparkles, AlertCircle, ChevronUp } from 'lucide-react';
-import type { AISuggestion as AISuggestionType } from '../types';
+import { Sparkles, AlertCircle, ChevronUp } from "lucide-react";
+import type { AISuggestion as AISuggestionType } from "../types";
 
 interface AISuggestionProps {
   suggestion: AISuggestionType | null;
@@ -25,7 +25,7 @@ export function AISuggestion({
           setIsOpen(true);
           if (!suggestion && !isLoading) onGetFix();
         }}
-        className="mt-3 flex items-center justify-center gap-2 w-full rounded-md bg-slate-800 py-2.5 text-sm font-medium text-purple-400 hover:bg-slate-700/80 hover:text-purple-300 transition-colors border border-purple-500/20"
+        className="mt-3 flex w-full items-center justify-center gap-2 rounded-md border border-purple-500/20 bg-slate-800 py-2.5 text-sm font-medium text-purple-400 transition-colors hover:bg-slate-700/80 hover:text-purple-300"
       >
         <Sparkles size={16} />
         Get AI Fix
@@ -37,7 +37,7 @@ export function AISuggestion({
     <div className="mt-3 overflow-hidden rounded-md border border-purple-500/30 bg-purple-500/5">
       <button
         onClick={() => setIsOpen(false)}
-        className="flex w-full items-center justify-between bg-slate-800/80 px-4 py-2 text-sm font-medium text-purple-300 hover:bg-slate-700/80 transition-colors"
+        className="flex w-full items-center justify-between bg-slate-800/80 px-4 py-2 text-sm font-medium text-purple-300 transition-colors hover:bg-slate-700/80"
       >
         <span className="flex items-center gap-2">
           <Sparkles size={16} />
@@ -65,22 +65,26 @@ export function AISuggestion({
         ) : suggestion ? (
           <div className="space-y-4">
             <div>
-              <h4 className="font-medium text-slate-200 mb-1">Why it fails</h4>
-              <p className="text-slate-300 leading-relaxed text-[13px]">{suggestion.explanation}</p>
+              <h4 className="mb-1 font-medium text-slate-200">Why it fails</h4>
+              <p className="text-[13px] leading-relaxed text-slate-300">
+                {suggestion.explanation}
+              </p>
             </div>
-            
+
             <div>
-              <h4 className="font-medium text-slate-200 mb-1">How to fix it</h4>
-              <pre className="mt-2 overflow-x-auto rounded border border-slate-700 bg-slate-900 p-3 text-[13px] text-slate-300 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-600">
+              <h4 className="mb-1 font-medium text-slate-200">How to fix it</h4>
+              <pre className="scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-600 mt-2 overflow-x-auto rounded border border-slate-700 bg-slate-900 p-3 text-[13px] text-slate-300">
                 <code>{suggestion.codeSnippet}</code>
               </pre>
             </div>
-            
+
             {suggestion.wcagReference && (
-              <div className="pt-2 border-t border-slate-700">
-                <p className="text-xs text-slate-400 flex items-center gap-1.5">
-                  Reference: 
-                  <span className="font-medium text-slate-300">{suggestion.wcagReference}</span>
+              <div className="border-t border-slate-700 pt-2">
+                <p className="flex items-center gap-1.5 text-xs text-slate-400">
+                  Reference:
+                  <span className="font-medium text-slate-300">
+                    {suggestion.wcagReference}
+                  </span>
                 </p>
               </div>
             )}
