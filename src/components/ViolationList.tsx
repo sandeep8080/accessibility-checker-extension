@@ -1,6 +1,6 @@
-import { AlertTriangle, AlertCircle, Info } from 'lucide-react';
-import type { MappedViolation, Severity } from '../types';
-import { ViolationCard } from './ViolationCard';
+import { AlertTriangle, AlertCircle, Info } from "lucide-react";
+import type { MappedViolation, Severity } from "../types";
+import { ViolationCard } from "./ViolationCard";
 
 interface ViolationListProps {
   violations: MappedViolation[];
@@ -15,41 +15,44 @@ export function ViolationList({ violations }: ViolationListProps) {
       acc[v.severity].push(v);
       return acc;
     },
-    { error: [], warning: [], notice: [] } as Record<Severity, MappedViolation[]>
+    { error: [], warning: [], notice: [] } as Record<
+      Severity,
+      MappedViolation[]
+    >
   );
 
   return (
     <div className="space-y-6">
-      <SeverityGroup 
-        title="Errors (Critical / Serious)" 
-        violations={grouped.error} 
-        icon={<AlertCircle className="text-rose-500" size={18} />}
-        colorClass="text-rose-400"
+      <SeverityGroup
+        title="Errors (Critical / Serious)"
+        violations={grouped.error}
+        icon={<AlertCircle className="text-status-error" size={18} />}
+        colorClass="text-status-error"
       />
-      <SeverityGroup 
-        title="Warnings (Moderate)" 
-        violations={grouped.warning} 
-        icon={<AlertTriangle className="text-amber-500" size={18} />}
-        colorClass="text-amber-400"
+      <SeverityGroup
+        title="Warnings (Moderate)"
+        violations={grouped.warning}
+        icon={<AlertTriangle className="text-status-warning" size={18} />}
+        colorClass="text-status-warning"
       />
-      <SeverityGroup 
-        title="Notices (Minor)" 
-        violations={grouped.notice} 
-        icon={<Info className="text-blue-500" size={18} />}
-        colorClass="text-blue-400"
+      <SeverityGroup
+        title="Notices (Minor)"
+        violations={grouped.notice}
+        icon={<Info className="text-status-info" size={18} />}
+        colorClass="text-status-info"
       />
     </div>
   );
 }
 
-function SeverityGroup({ 
-  title, 
-  violations, 
+function SeverityGroup({
+  title,
+  violations,
   icon,
-  colorClass 
-}: { 
-  title: string; 
-  violations: MappedViolation[]; 
+  colorClass,
+}: {
+  title: string;
+  violations: MappedViolation[];
   icon: React.ReactNode;
   colorClass: string;
 }) {
@@ -57,10 +60,13 @@ function SeverityGroup({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2 px-1 border-b border-slate-700/50 pb-2">
+      <div className="flex items-center gap-2 border-b border-border-secondary/50 px-1 pb-2">
         {icon}
         <h2 className={`text-sm font-semibold ${colorClass}`}>
-          {title} <span className="opacity-70 font-normal ml-1">({violations.length})</span>
+          {title}{" "}
+          <span className="ml-1 font-normal opacity-70">
+            ({violations.length})
+          </span>
         </h2>
       </div>
       <div className="space-y-3">

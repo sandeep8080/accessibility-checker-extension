@@ -1,8 +1,8 @@
-import type { Result } from 'axe-core';
+import type { Result } from "axe-core";
 
-export type Severity = 'error' | 'warning' | 'notice';
+export type Severity = "error" | "warning" | "notice";
 
-export type AIProvider = 'gemini' | 'claude' | 'groq';
+export type AIProvider = "gemini" | "claude" | "groq";
 
 export interface MappedViolation extends Result {
   severity: Severity;
@@ -29,6 +29,6 @@ export interface AISuggestion {
   error?: string;
 }
 
-export type MessageAction = 
-  | { action: 'RUN_AUDIT' }
-  | { action: 'GET_AI_SUGGESTION'; payload: { violation: MappedViolation } };
+export type MessageAction =
+  | { action: "RUN_AUDIT" }
+  | { action: "GET_AI_SUGGESTION"; payload: { violation: MappedViolation } };

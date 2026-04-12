@@ -7,9 +7,10 @@ This project was built to empower developers to create more accessible web exper
 ---
 
 ## 🚀 Features
+
 - **One-Click Auditing:** Instantly scan any webpage for WCAG 2.1 AA violations.
 - **Categorized Results:** Sorts issues into intuitive Severity groups (Errors, Warnings, Notices).
-- **AI-Powered Code Fixes:** Leverages Google Gemini 2.0 to explain *why* an element fails and provides the exact React/HTML snippet to fix it.
+- **AI-Powered Code Fixes:** Leverages Google Gemini 2.0 to explain _why_ an element fails and provides the exact React/HTML snippet to fix it.
 - **Audit History:** Automatically saves your last 50 audits locally, with the ability to export them as raw JSON datasets.
 - **BYOK (Bring Your Own Key):** Secure local storage integration to manage your own AI API keys.
 
@@ -28,18 +29,17 @@ Because this project is built using modern tooling, hot-reloading works flawless
    \`\`\`bash
    npm run dev
    \`\`\`
-   *(This starts Vite and creates a continuously updated \`dist/\` folder in your project root.)*
+   _(This starts Vite and creates a continuously updated \`dist/\` folder in your project root.)_
 
 3. **Load the Extension into Chrome:**
    - Open Google Chrome and navigate to \`chrome://extensions/\`
    - Enable the **"Developer mode"** toggle (top right corner).
    - Click the **"Load unpacked"** button.
    - Select the \`dist\` directory located inside your project folder.
-   
 4. **Develop with HMR:**
    - Pin the extension to your toolbar.
    - Any changes you make to the React UI will instantly reflect in the popup—try changing a color in \`src/App.tsx\`!
-   - *(Note: If you encounter Content Security Policy (CSP) errors in the console from \`localhost\`, just click the circular "Reload" icon on the extension's card in the \`chrome://extensions/\` page!)*
+   - _(Note: If you encounter Content Security Policy (CSP) errors in the console from \`localhost\`, just click the circular "Reload" icon on the extension's card in the \`chrome://extensions/\` page!)_
 
 ---
 
@@ -49,7 +49,6 @@ A Chrome extension isn't a single website—it's essentially three separate envi
 
 1. **The Popup UI (\`src/popup/\` equivalent -> \`src/App.tsx\`)**
    This is the React Single Page Application that opens when you click the extension icon. It acts as the "Director". When opened, it queries the active Chrome Tab and sends a \`RUN_AUDIT\` message to the Content Script.
-   
 2. **The Content Script (\`src/content/content.ts\`)**
    This script is injected directly into the DOM of the website you are currently viewing. When it receives the \`RUN_AUDIT\` message, it fires up the \`axe-core\` engine to analyze the page's HTML structure. It packages the raw violations, maps them to simpler severity tiers, and sends them back to the Popup UI for display.
 
@@ -78,7 +77,7 @@ When a user clicks "Get AI Fix" on a specific violation in the Popup UI:
 The \`public/manifest.json\` is the "blueprint" that Chrome reads to understand what your extension is allowed to do.
 
 - **\`manifest_version: 3\`**: Google's modern, heavily-secured standard for extensions.
-- **\`permissions\`**: 
+- **\`permissions\`**:
   - \`activeTab\`: Allows us temporary access to the webpage to run the audit.
   - \`scripting\`: Required in MV3 to execute content scripts programmatically.
   - \`storage\`: Allows us to use `chrome.storage.local` (for API keys and History) and `chrome.storage.session` (for AI caching).
@@ -89,11 +88,11 @@ The \`public/manifest.json\` is the "blueprint" that Chrome reads to understand 
 
 ## 📦 Why We Used These Specific Packages
 
-| Package | Purpose | Why We Chose It |
-| :--- | :--- | :--- |
-| **Vite / React SPA** | Frontend Engine | React is the industry standard for complex interactive UIs. Vite provides near-instant compilation and a vastly superior developer experience compared to Webpack or CRA. |
-| **@crxjs/vite-plugin** | Extension Bundler | Historically, building Chrome Extensions with React was a configuration nightmare. CRXJS acts as the bridge—parsing the \`manifest.json\` on the fly, enabling Vite's Hot Module Replacement *inside* an extension environment, and correctly outputting multiple entry points (Popup, Content, Background). |
-| **axe-core** | Accessibility Engine | The absolute gold standard of automated accessibility testing. Maintained by Deque Systems, it is the exact same engine that powers Google Lighthouse and Microsoft Accessibility Insights. |
-| **Tailwind CSS (v4)** | Styling | Allows for rapid prototyping of a premium, dark-mode-first aesthetic without writing bloated CSS files. V4 introduces lightning-fast engine compiling without needing a \`tailwind.config.js\` file. |
-| **Lucide React** | Iconography | Lightweight, crisp, and neutral SVG icons that easily match modern interface design patterns. |
-| **@google/generative-ai** | AI Integration | The official SDK to interact with Gemini 2.0 Flash. We chose Gemini Flash because it is incredibly fast (crucial for a snappy UI), accurate for code generation, and currently offers a generous free tier for developers. |
+| Package                   | Purpose              | Why We Chose It                                                                                                                                                                                                                                                                                              |
+| :------------------------ | :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Vite / React SPA**      | Frontend Engine      | React is the industry standard for complex interactive UIs. Vite provides near-instant compilation and a vastly superior developer experience compared to Webpack or CRA.                                                                                                                                    |
+| **@crxjs/vite-plugin**    | Extension Bundler    | Historically, building Chrome Extensions with React was a configuration nightmare. CRXJS acts as the bridge—parsing the \`manifest.json\` on the fly, enabling Vite's Hot Module Replacement _inside_ an extension environment, and correctly outputting multiple entry points (Popup, Content, Background). |
+| **axe-core**              | Accessibility Engine | The absolute gold standard of automated accessibility testing. Maintained by Deque Systems, it is the exact same engine that powers Google Lighthouse and Microsoft Accessibility Insights.                                                                                                                  |
+| **Tailwind CSS (v4)**     | Styling              | Allows for rapid prototyping of a premium, dark-mode-first aesthetic without writing bloated CSS files. V4 introduces lightning-fast engine compiling without needing a \`tailwind.config.js\` file.                                                                                                         |
+| **Lucide React**          | Iconography          | Lightweight, crisp, and neutral SVG icons that easily match modern interface design patterns.                                                                                                                                                                                                                |
+| **@google/generative-ai** | AI Integration       | The official SDK to interact with Gemini 2.0 Flash. We chose Gemini Flash because it is incredibly fast (crucial for a snappy UI), accurate for code generation, and currently offers a generous free tier for developers.                                                                                   |

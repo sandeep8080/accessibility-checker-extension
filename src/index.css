@@ -1,15 +1,74 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary-50: #fcf6ff;
-  --color-primary-100: #eedvff;
-  --color-primary-500: #aa3bff;
-  --color-primary-600: #8c2bd9;
+@theme inline {
+  /* Backgrounds */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-tertiary: var(--bg-tertiary);
+
+  /* Text Colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  /* Accent & Status Colors */
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-status-error: var(--status-error);
+  --color-status-success: var(--status-success);
+  --color-status-warning: var(--status-warning);
+  --color-status-info: var(--status-info);
+
+  /* Borders */
+  --color-border-primary: var(--border-primary);
+  --color-border-secondary: var(--border-secondary);
+}
+
+:root {
+  /* Backgrounds */
+  --bg-primary: oklch(0.208 0.042 265.755); /* Base background (Slate-900) */
+  --bg-secondary: oklch(0.279 0.041 260.031); /* Panels and cards (Slate-800) */
+  --bg-tertiary: oklch(
+    0.321 0.034 261.411
+  ); /* Hover states and dividers (Slate-700) */
+
+  /* Text Colors */
+  --text-primary: oklch(0.984 0.003 247.858); /* Main headings (Slate-50) */
+  --text-secondary: oklch(
+    0.858 0.015 251.378
+  ); /* Standard text and labels (Slate-200) */
+  --text-muted: oklch(
+    0.704 0.04 256.788
+  ); /* Descriptions and muted info (Slate-400) */
+
+  /* Accents (Purple) */
+  --accent-primary: oklch(
+    0.627 0.265 303.89
+  ); /* Primary action color (Purple-600) */
+  --accent-secondary: oklch(
+    0.558 0.288 302.321
+  ); /* Hover state action (Purple-500) */
+  --accent-foreground: oklch(
+    0.704 0.191 312.135
+  ); /* Text on background icons (Purple-400) */
+
+  /* Status Colors */
+  --status-error: oklch(0.558 0.288 27.325); /* Error and alerts (Rose-500) */
+  --status-success: oklch(
+    0.627 0.265 149.213
+  ); /* Success and checkmarks (Emerald-500) */
+  --status-warning: oklch(0.769 0.188 70.08); /* Warnings (Amber-500) */
+  --status-info: oklch(0.627 0.15 250); /* Informational and links (Blue-500) */
+
+  /* Borders */
+  --border-primary: var(--bg-tertiary); /* Stronger borders */
+  --border-secondary: var(--bg-secondary); /* Subtle dividers */
 }
 
 @layer base {
   body {
-    @apply bg-slate-900 text-slate-100 antialiased;
+    @apply bg-bg-primary text-text-secondary antialiased;
     width: 400px;
     height: 600px;
     margin: 0;
