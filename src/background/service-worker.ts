@@ -137,8 +137,17 @@ async function handleAISuggestion(
 }
 
 // Logic to listen for keyboard shortcut to run audit
-chrome.commands.onCommand.addListener((command) => {
+chrome.commands.onCommand.addListener(async (command, tab) => {
   if (command === "run-audit") {
     console.log("Keyboard shortcut triggered: Running accessibility audit");
+    const result = await chrome.tabs
+      .sendMessage(tab?.id, { action: "RUN_AUDIT" })
+      .catch((e) => {
+        console.error("Failed to send RUN_AUDIT message:", e);
+      });
+
+    console.log("Audit result from command run:", result);
+    chrome.runtime.sendMessage({ action: "AUDIT_RESULT", payload: result });
+    // TODO: handle the result, & have to save the result in the local storage & then read it to render the data on the UI.
   }
 });
