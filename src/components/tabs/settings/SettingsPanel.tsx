@@ -14,10 +14,14 @@ export function SettingsPanel() {
 
   useEffect(() => {
     // Load saved settings
-    chrome.storage.local.get(["apiKey", "aiProvider"]).then((result) => {
-      if (result.apiKey) setApiKey(result.apiKey as string);
-      if (result.aiProvider) setProvider(result.aiProvider as AIProvider);
-    });
+    chrome.storage.local
+      .get(["apiKey", "aiProvider", "conformanceLvl"])
+      .then((result) => {
+        if (result.apiKey) setApiKey(result.apiKey as string);
+        if (result.aiProvider) setProvider(result.aiProvider as AIProvider);
+        if (result.conformanceLvl)
+          setConformanceLvl(result.conformanceLvl as string);
+      });
   }, []);
 
   const onChangeApiKey = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +32,11 @@ export function SettingsPanel() {
     setProvider(e.target.value as AIProvider);
   };
 
-  const onChangeConformanceLvl = (lvl: string) => {
+  const onChangeConformanceLvl = async (lvl: string) => {
     setConformanceLvl(lvl);
+    // Auto-save conformance level immediately so next audit uses updated setting
+    await chrome.storage.local.set({ conformanceLvl: lvl });
+    console.log("✅ Conformance level saved:", lvl);
   };
 
   const onClickAutoAudit = () => {
@@ -41,6 +48,7 @@ export function SettingsPanel() {
     await chrome.storage.local.set({
       apiKey: apiKey.trim(),
       aiProvider: provider,
+      conformanceLvl: conformanceLvl,
     });
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 2000);

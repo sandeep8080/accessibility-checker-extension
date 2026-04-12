@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Activity,
   History as HistoryIcon,
@@ -10,6 +10,7 @@ import type { AuditResult } from "./types";
 import { ViolationList } from "./components/ViolationList";
 import { HistoryPanel } from "./components/HistoryPanel";
 import { SettingsPanel } from "./components/tabs/settings/SettingsPanel";
+import TabButton from "./components/common/TabButton";
 
 type Tab = "results" | "history" | "settings";
 
@@ -19,11 +20,7 @@ function App() {
   const [isAuditing, setIsAuditing] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    runAudit();
-  }, []);
-
-  const runAudit = async () => {
+  const runAudit = useCallback(async () => {
     setIsAuditing(true);
     setError(null);
 
@@ -46,9 +43,12 @@ function App() {
         throw new Error("Cannot audit browser internal pages.");
       }
 
+      console.log("📤 UI: Requesting audit from content script...");
       const response = await chrome.tabs.sendMessage(tab.id, {
         action: "RUN_AUDIT",
       });
+
+      console.log("📥 UI: Audit response received:", response);
 
       if (response && response.success) {
         setAuditResult(response.data);
@@ -56,16 +56,21 @@ function App() {
       } else {
         throw new Error(response?.error || "Failed to run audit");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Audit Error:", err);
       setError(
-        err.message ||
-          "An unexpected error occurred. You might need to refresh the page."
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. You might need to refresh the page."
       );
     } finally {
       setIsAuditing(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    runAudit();
+  }, [runAudit]);
 
   const saveToHistory = async (result: AuditResult) => {
     try {
@@ -173,32 +178,6 @@ function App() {
         )}
       </main>
     </div>
-  );
-}
-
-function TabButton({
-  active,
-  onClick,
-  icon,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  icon: React.ReactNode;
-  label: string;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex flex-1 items-center justify-center gap-2 rounded-t-lg border-b-2 px-2 py-3 text-sm font-medium transition-all ${
-        active
-          ? "border-accent-primary bg-bg-secondary/80 text-accent-foreground"
-          : "text-text-muted hover:bg-bg-secondary/40 hover:text-text-secondary border-transparent"
-      } `}
-    >
-      {icon}
-      {label}
-    </button>
   );
 }
 

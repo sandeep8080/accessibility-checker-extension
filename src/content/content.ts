@@ -17,6 +17,11 @@ const severityMap: Record<string, Severity> = {
 // Initialize axe for standard WCAG 2.1 AA checking
 axe.configure({
   rules: [{ id: "color-contrast", enabled: true }],
+  branding: {
+    brand: "Accessibility Tool",
+    application: "Chrome Extension",
+  },
+  reporter: "v2",
 });
 
 chrome.runtime.onMessage.addListener(
@@ -34,9 +39,36 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
+// Maps a conformance level selection to the full set of cumulative tags.
+// axe-core tags are NOT cumulative — "wcag21aaa" alone skips A and AA rules.
+const conformanceTagMap: Record<string, string[]> = {
+  A: ["wcag2a", "wcag21a"],
+  AA: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"],
+  AAA: ["wcag2a", "wcag2aa", "wcag2aaa", "wcag21a", "wcag21aa", "wcag21aaa"],
+};
+
 async function runAudit(): Promise<AuditResult> {
   try {
-    const results = await axe.run();
+    const storage = await chrome.storage.local.get("conformanceLvl");
+    const lvl = (storage.conformanceLvl as string) || "AA";
+    const tags = conformanceTagMap[lvl] || conformanceTagMap["AA"];
+
+    console.log("🚀 Starting accessibility audit");
+    console.log("   Level:", lvl);
+    console.log("   Tags:", tags);
+
+    const results = await axe.run({
+      runOnly: {
+        type: "tag",
+        values: tags,
+      },
+    } as import("axe-core").RunOptions);
+
+    console.log(
+      "✅ Audit complete. Found",
+      results.violations.length,
+      "violations."
+    );
 
     // Convert to our format
     const violations: MappedViolation[] = results.violations.map((v) => ({
