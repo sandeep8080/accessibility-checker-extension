@@ -72,6 +72,19 @@ function App() {
     runAudit();
   }, [runAudit]);
 
+  useEffect(() => {
+    chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+      if (message.action === "AUDIT_RESULT") {
+        console.log(
+          "Received AUDIT_RESULT message in App component:",
+          message.payload
+        );
+        setAuditResult(message.payload.data);
+        saveToHistory(message.payload.data);
+      }
+    });
+  });
+
   const saveToHistory = async (result: AuditResult) => {
     try {
       const data = await chrome.storage.local.get("auditHistory");
