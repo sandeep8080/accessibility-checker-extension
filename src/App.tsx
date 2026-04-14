@@ -11,6 +11,8 @@ import { ViolationList } from "./components/ViolationList";
 import { HistoryPanel } from "./components/HistoryPanel";
 import { SettingsPanel } from "./components/tabs/settings/SettingsPanel";
 import TabButton from "./components/common/TabButton";
+import { saveAuditResultToLocal, tabValidator } from "./utils";
+import { ACTIONS, ERROR_MESSAGES, UI_MESSAGES } from "./utils/constant";
 
 type Tab = "results" | "history" | "settings";
 
@@ -21,9 +23,9 @@ function App() {
   const [error, setError] = useState<string | null>(null);
 
   const runAudit = useCallback(async () => {
-    setIsAuditing(true);
+    // Set the loading state true & reset the error state
     setError(null);
-
+    setIsAuditing(true);
     try {
       // 1. Get active tab
       const [tab] = await chrome.tabs.query({
@@ -31,37 +33,32 @@ function App() {
         currentWindow: true,
       });
 
-      if (!tab.id) {
-        throw new Error("No active tab found");
-      }
+      if (tabValidator(tab)) {
+        console.log("📤 UI: Requesting audit from content script...");
+        const response = await chrome.tabs.sendMessage(tab.id, {
+          action: ACTIONS.RUN_AUDIT,
+        });
 
-      if (
-        tab.url?.startsWith("chrome://") ||
-        tab.url?.startsWith("edge://") ||
-        tab.url?.startsWith("about:")
-      ) {
-        throw new Error("Cannot audit browser internal pages.");
-      }
+        console.log("📥 UI: Audit response received:", response);
 
-      console.log("📤 UI: Requesting audit from content script...");
-      const response = await chrome.tabs.sendMessage(tab.id, {
-        action: "RUN_AUDIT",
-      });
-
-      console.log("📥 UI: Audit response received:", response);
-
-      if (response && response.success) {
-        setAuditResult(response.data);
-        saveToHistory(response.data);
+        // TODO: Can we move this if-else validation in saveAuditResultToLocal function in utils?
+        if (response && response.success) {
+          saveAuditResultToLocal(response.data);
+          setIsAuditing(false);
+        } else {
+          setIsAuditing(false);
+          throw new Error(response?.error || ERROR_MESSAGES.AUDIT_FAILED);
+        }
       } else {
-        throw new Error(response?.error || "Failed to run audit");
+        setIsAuditing(false);
+        setError(ERROR_MESSAGES.AUDIT_TAB_INACCESSIBLE);
+        // TODO: Will handle this case later
+        // Need to do some validation handling here
       }
     } catch (err: unknown) {
       console.error("Audit Error:", err);
       setError(
-        err instanceof Error
-          ? err.message
-          : "An unexpected error occurred. You might need to refresh the page."
+        err instanceof Error ? err.message : ERROR_MESSAGES.UNEXPECTED_ERROR
       );
     } finally {
       setIsAuditing(false);
@@ -72,29 +69,30 @@ function App() {
     runAudit();
   }, [runAudit]);
 
+  // useEffect to listen to the local storage changes & update the results tab
   useEffect(() => {
-    chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-      if (message.action === "AUDIT_RESULT") {
-        console.log(
-          "Received AUDIT_RESULT message in App component:",
-          message.payload
-        );
-        setAuditResult(message.payload.data);
-        saveToHistory(message.payload.data);
+    const handleStorageChange = (
+      changes: { [key: string]: chrome.storage.StorageChange },
+      area: string
+    ) => {
+      if (area === "local" && changes.auditInProgress) {
+        setIsAuditing(changes.auditInProgress.newValue);
       }
-    });
-  });
 
-  const saveToHistory = async (result: AuditResult) => {
-    try {
-      const data = await chrome.storage.local.get("auditHistory");
-      const history = (data.auditHistory as AuditResult[]) || [];
-      const newHistory = [result, ...history].slice(0, 50);
-      await chrome.storage.local.set({ auditHistory: newHistory });
-    } catch (e) {
-      console.error("Failed to save history", e);
-    }
-  };
+      if (area === "local" && changes.auditResults) {
+        console.log(
+          "Audit results updated in storage, refreshing results tab...",
+          changes.auditResults
+        );
+        setAuditResult(changes.auditResults.newValue);
+        setIsAuditing(false);
+      }
+    };
+
+    chrome.storage.onChanged.addListener(handleStorageChange);
+
+    return () => chrome.storage.onChanged.removeListener(handleStorageChange);
+  }, []);
 
   return (
     <div className="flex h-full flex-col overflow-hidden font-sans">
@@ -131,10 +129,10 @@ function App() {
               <div className="flex flex-1 animate-pulse flex-col items-center justify-center p-8 text-center">
                 <div className="border-t-accent-primary border-accent-primary/30 mb-4 h-12 w-12 animate-spin rounded-full border-4" />
                 <h2 className="text-text-secondary text-lg font-medium">
-                  Analyzing Page...
+                  {UI_MESSAGES.ANALYZING_PAGE}
                 </h2>
                 <p className="text-text-muted mt-2 text-sm">
-                  Checking for WCAG 2.1 compliance
+                  {UI_MESSAGES.WCAG_COMPLIANCE_CHECK}
                 </p>
               </div>
             ) : error ? (
@@ -144,7 +142,7 @@ function App() {
                   className="text-status-error mb-4 opacity-80"
                 />
                 <h2 className="text-status-error mb-2 text-lg font-semibold">
-                  Audit Failed
+                  {UI_MESSAGES.AUDIT_FAILED_TITLE}
                 </h2>
                 <p className="text-text-muted max-w-[250px] text-sm">{error}</p>
                 <button
@@ -162,10 +160,10 @@ function App() {
                       <CheckCircle size={40} className="text-status-success" />
                     </div>
                     <h2 className="text-status-success mb-2 text-xl font-semibold">
-                      Perfect Score!
+                      {UI_MESSAGES.PERFECT_SCORE_TITLE}
                     </h2>
                     <p className="text-text-muted max-w-[280px] text-sm">
-                      No accessibility violations found on this page. Great job!
+                      {UI_MESSAGES.PERFECT_SCORE_DESCRIPTION}
                     </p>
                   </div>
                 ) : (

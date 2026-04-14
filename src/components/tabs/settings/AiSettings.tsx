@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Key, Eye, EyeOff } from "lucide-react";
 import type { AIProvider } from "../../../types";
+import { UI_MESSAGES } from "../../../utils/constant";
 
 export default function AiSettings({
   apiKey,
@@ -21,9 +22,7 @@ export default function AiSettings({
         API Configuration
       </h2>
       <p className="text-text-muted text-sm">
-        To enable AI fix suggestions, you need to provide an API key. Your key
-        is stored securely in your browser's local storage and is never sent to
-        any server other than the AI provider.
+        {UI_MESSAGES.API_CONFIG_DESCRIPTION}
       </p>
       <div className="space-y-4">
         <div className="space-y-1.5">

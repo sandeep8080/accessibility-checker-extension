@@ -6,6 +6,7 @@ import type {
 } from "../types";
 import { SeverityBadge } from "./SeverityBadge";
 import { AISuggestion } from "./AISuggestion";
+import { ACTIONS, ERROR_MESSAGES } from "../utils/constant";
 
 interface ViolationCardProps {
   violation: MappedViolation;
@@ -22,20 +23,20 @@ export function ViolationCard({ violation }: ViolationCardProps) {
     setError(null);
     try {
       const response = await chrome.runtime.sendMessage({
-        action: "GET_AI_SUGGESTION",
+        action: ACTIONS.GET_AI_SUGGESTION,
         payload: { violation },
       });
 
       if (response && response.success) {
         setSuggestion(response.data);
       } else {
-        throw new Error(response?.error || "Failed to get AI suggestion");
+        throw new Error(response?.error || ERROR_MESSAGES.AI_SUGGESTION_FAILED);
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("An unexpected error occurred");
+        setError(ERROR_MESSAGES.UNEXPECTED_ERROR_GENERIC);
       }
     } finally {
       setIsLoading(false);

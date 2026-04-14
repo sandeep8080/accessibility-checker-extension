@@ -5,6 +5,7 @@ import type {
   MappedViolation,
   Severity,
 } from "../types";
+import { ACTIONS, ERROR_MESSAGES } from "../utils/constant";
 
 // Map axe-core impact levels to our Severity type
 const severityMap: Record<string, Severity> = {
@@ -26,7 +27,7 @@ axe.configure({
 
 chrome.runtime.onMessage.addListener(
   (message: MessageAction, _sender, sendResponse) => {
-    if (message.action === "RUN_AUDIT") {
+    if (message.action === ACTIONS.RUN_AUDIT) {
       // Execute async audit
       runAudit()
         .then((data) => sendResponse({ success: true, data }))
@@ -98,8 +99,6 @@ async function runAudit(): Promise<AuditResult> {
     };
   } catch (error) {
     console.error("Axe-core audit failed:", error);
-    throw new Error(
-      "Failed to analyze the page. Please ensure you are not on a browser internal page."
-    );
+    throw new Error(ERROR_MESSAGES.AUDIT_PAGE_ANALYSIS_FAILED);
   }
 }

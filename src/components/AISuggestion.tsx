@@ -1,5 +1,6 @@
 import { Sparkles, AlertCircle, ChevronUp } from "lucide-react";
 import type { AISuggestion as AISuggestionType } from "../types";
+import { UI_MESSAGES } from "../utils/constant";
 
 interface AISuggestionProps {
   suggestion: AISuggestionType | null;
@@ -65,14 +66,14 @@ export function AISuggestion({
         ) : suggestion ? (
           <div className="space-y-4">
             <div>
-              <h4 className="mb-1 font-medium text-slate-200">Why it fails</h4>
+              <h4 className="mb-1 font-medium text-slate-200">{UI_MESSAGES.AI_WHY_IT_FAILS}</h4>
               <p className="text-[13px] leading-relaxed text-slate-300">
                 {suggestion.explanation}
               </p>
             </div>
 
             <div>
-              <h4 className="mb-1 font-medium text-slate-200">How to fix it</h4>
+              <h4 className="mb-1 font-medium text-slate-200">{UI_MESSAGES.AI_HOW_TO_FIX}</h4>
               <pre className="scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-600 mt-2 overflow-x-auto rounded border border-slate-700 bg-slate-900 p-3 text-[13px] text-slate-300">
                 <code>{suggestion.codeSnippet}</code>
               </pre>
