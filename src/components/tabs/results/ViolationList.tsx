@@ -1,5 +1,5 @@
 import { AlertTriangle, AlertCircle, Info } from "lucide-react";
-import type { MappedViolation, Severity } from "../types";
+import type { MappedViolation, Severity } from "../../../types";
 import { ViolationCard } from "./ViolationCard";
 
 interface ViolationListProps {
@@ -60,7 +60,7 @@ function SeverityGroup({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2 border-b border-border-secondary/50 px-1 pb-2">
+      <div className="border-border-secondary/50 flex items-center gap-2 border-b px-1 pb-2">
         {icon}
         <h2 className={`text-sm font-semibold ${colorClass}`}>
           {title}{" "}

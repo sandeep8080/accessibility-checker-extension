@@ -5,6 +5,8 @@ import type {
   MessageAction,
   AIProvider,
 } from "../types";
+import { saveAuditResultToLocal, tabValidator } from "../utils";
+import { ACTIONS, ERROR_MESSAGES } from "../utils/constant";
 
 // In-memory cache fallback in case chrome.storage.session isn't available
 const memoryCache = new Map<string, AISuggestion>();
@@ -86,7 +88,7 @@ Do not include any text before or after the JSON. Provide only the valid JSON ob
     return JSON.parse(cleanJson) as AISuggestion;
   } catch {
     console.error("Failed to parse Gemini response as JSON:", responseText);
-    throw new Error("AI returned an invalid response format.");
+    throw new Error(ERROR_MESSAGES.AI_INVALID_RESPONSE);
   }
 }
 
@@ -118,9 +120,7 @@ async function handleAISuggestion(
   // 2. Get API Key
   const credentials = await getApiKey();
   if (!credentials) {
-    throw new Error(
-      "API Key missing. Please configure your API key in the Settings tab."
-    );
+    throw new Error(ERROR_MESSAGES.API_KEY_MISSING);
   }
 
   // 3. Call AI API
@@ -139,15 +139,23 @@ async function handleAISuggestion(
 // Logic to listen for keyboard shortcut to run audit
 chrome.commands.onCommand.addListener(async (command, tab) => {
   if (command === "run-audit") {
-    console.log("Keyboard shortcut triggered: Running accessibility audit");
-    const result = await chrome.tabs
-      .sendMessage(tab?.id, { action: "RUN_AUDIT" })
-      .catch((e) => {
-        console.error("Failed to send RUN_AUDIT message:", e);
-      });
+    if (tabValidator(tab)) {
+      // Setting the loading state to true
+      await chrome.storage.local.set({ auditInProgress: true });
+      console.log("Keyboard shortcut triggered: Running accessibility audit");
+      const response = await chrome.tabs
+        .sendMessage(tab?.id, { action: ACTIONS.RUN_AUDIT })
+        .catch((e) => {
+          console.error("Failed to send RUN_AUDIT message:", e);
+        });
 
-    console.log("Audit result from command run:", result);
-    chrome.runtime.sendMessage({ action: "AUDIT_RESULT", payload: result });
-    // TODO: handle the result, & have to save the result in the local storage & then read it to render the data on the UI.
+      console.log("Audit result from command run:", response);
+      saveAuditResultToLocal(response);
+    } else {
+      await chrome.storage.local.set({
+        auditError: ERROR_MESSAGES.AUDIT_TAB_INACCESSIBLE,
+        auditInProgress: false,
+      });
+    }
   }
 });

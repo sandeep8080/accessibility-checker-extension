@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { History, Download, Trash2, Calendar } from "lucide-react";
 import type { AuditResult } from "../types";
+import { UI_MESSAGES } from "../utils/constant";
 
 export function HistoryPanel() {
   const [history, setHistory] = useState<AuditResult[]>([]);
@@ -23,7 +24,7 @@ export function HistoryPanel() {
   }, []);
 
   const clearHistory = async () => {
-    if (confirm("Are you sure you want to clear all audit history?")) {
+    if (confirm(UI_MESSAGES.CLEAR_HISTORY_CONFIRM)) {
       await chrome.storage.local.remove("auditHistory");
       setHistory([]);
     }
@@ -50,8 +51,8 @@ export function HistoryPanel() {
         <div className="border-border-primary bg-bg-secondary rounded-full border p-3">
           <History size={32} className="text-text-muted" />
         </div>
-        <p>No audit history found.</p>
-        <p className="text-sm">Run an audit on any page to see it here.</p>
+        <p>{UI_MESSAGES.NO_HISTORY}</p>
+        <p className="text-sm">{UI_MESSAGES.NO_HISTORY_HINT}</p>
       </div>
     );
   }
@@ -85,7 +86,7 @@ export function HistoryPanel() {
               <div className="absolute top-3 right-3 opacity-0 transition-opacity group-hover:opacity-100">
                 <button
                   onClick={() => exportAsJSON(result)}
-                  className="bg-bg-tertiary text-text-secondary hover:bg-bg-tertiary mt-6 rounded p-1.5 hover:text-text-primary transition-colors"
+                  className="bg-bg-tertiary text-text-secondary hover:bg-bg-tertiary hover:text-text-primary mt-6 rounded p-1.5 transition-colors"
                   title="Export JSON"
                 >
                   <Download size={14} />
