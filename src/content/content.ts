@@ -83,7 +83,7 @@ async function runAudit(): Promise<AuditResult> {
       nodes: v.nodes,
     }));
 
-    // Calculate sumary
+    // Calculate summary
     const summary = {
       error: violations.filter((v) => v.severity === "error").length,
       warning: violations.filter((v) => v.severity === "warning").length,

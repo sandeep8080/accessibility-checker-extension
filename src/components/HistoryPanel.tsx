@@ -86,7 +86,7 @@ export function HistoryPanel() {
               <div className="absolute top-3 right-3 opacity-0 transition-opacity group-hover:opacity-100">
                 <button
                   onClick={() => exportAsJSON(result)}
-                  className="bg-bg-tertiary text-text-secondary hover:bg-bg-tertiary mt-6 rounded p-1.5 hover:text-text-primary transition-colors"
+                  className="bg-bg-tertiary text-text-secondary hover:bg-bg-tertiary hover:text-text-primary mt-6 rounded p-1.5 transition-colors"
                   title="Export JSON"
                 >
                   <Download size={14} />

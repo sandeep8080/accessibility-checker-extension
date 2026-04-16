@@ -150,7 +150,7 @@ chrome.commands.onCommand.addListener(async (command, tab) => {
         });
 
       console.log("Audit result from command run:", response);
-      saveAuditResultToLocal(response.data);
+      saveAuditResultToLocal(response);
     } else {
       await chrome.storage.local.set({
         auditError: ERROR_MESSAGES.AUDIT_TAB_INACCESSIBLE,

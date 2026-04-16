@@ -3,10 +3,10 @@ import { ExternalLink, Code } from "lucide-react";
 import type {
   MappedViolation,
   AISuggestion as AISuggestionType,
-} from "../types";
-import { SeverityBadge } from "./SeverityBadge";
+} from "../../../types";
+import { SeverityBadge } from "../../SeverityBadge";
 import { AISuggestion } from "./AISuggestion";
-import { ACTIONS, ERROR_MESSAGES } from "../utils/constant";
+import { ACTIONS, ERROR_MESSAGES } from "../../../utils/constant";
 
 interface ViolationCardProps {
   violation: MappedViolation;

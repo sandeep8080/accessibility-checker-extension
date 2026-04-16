@@ -1,7 +1,9 @@
-import type { AuditResult } from "../types";
+import type { AuditResponse, AuditResult } from "../types";
 import { ERROR_MESSAGES } from "./constant";
 
-export const tabValidator = (tab) => {
+export const tabValidator = (
+  tab?: chrome.tabs.Tab
+): tab is chrome.tabs.Tab & { id: number } => {
   if (!tab || !tab.id) {
     throw new Error(ERROR_MESSAGES.NO_ACTIVE_TAB);
   }
@@ -18,16 +20,24 @@ export const tabValidator = (tab) => {
   return true;
 };
 
-export const saveAuditResultToLocal = async (result: AuditResult) => {
+export const saveAuditResultToLocal = async (response: AuditResponse) => {
   try {
-    await chrome.storage.local.set({
-      auditResults: result,
-      auditInProgress: false,
-    });
-    await saveToHistory(result);
+    if (response && response.success) {
+      const result = response.data as AuditResult;
+      await chrome.storage.local.set({
+        auditResults: result,
+        auditInProgress: false,
+      });
+      await saveToHistory(result);
+    } else {
+      await chrome.storage.local.set({
+        auditError: response?.error || ERROR_MESSAGES.AUDIT_FAILED,
+        auditInProgress: false,
+      });
+    }
   } catch (error) {
     await chrome.storage.local.set({
-      auditError: error?.message || ERROR_MESSAGES.AUDIT_SAVE_FAILED,
+      auditError: (error as Error)?.message || ERROR_MESSAGES.AUDIT_SAVE_FAILED,
       auditInProgress: false,
     });
     // TODO: Need to handle the error use-case & how to show in the audit history
