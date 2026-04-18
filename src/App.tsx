@@ -1,13 +1,15 @@
 import { useState } from "react";
+
 import {
   Activity,
   History as HistoryIcon,
   Settings as SettingsIcon,
 } from "lucide-react";
-import { HistoryPanel } from "./components/HistoryPanel";
-import { SettingsPanel } from "./components/tabs/settings/SettingsPanel";
+
 import TabButton from "./components/common/TabButton";
+import { HistoryPanel } from "./components/HistoryPanel";
 import ResultsPanel from "./components/tabs/results/ResultsPanel";
+import { SettingsPanel } from "./components/tabs/settings/SettingsPanel";
 
 type Tab = "results" | "history" | "settings";
 

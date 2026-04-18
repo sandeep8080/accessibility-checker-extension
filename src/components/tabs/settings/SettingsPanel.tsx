@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
-import { Save, Trash2, CheckCircle2 } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { CheckCircle2, Save, Trash2 } from "lucide-react";
+
 import type { AIProvider } from "../../../types";
-import AuditSettings from "./AuditSettings";
 // import { ThemePreference } from "./ThemePreference";
 import { Divider } from "../../common/Divider";
 import AiSettings from "./AiSettings";
+import AuditSettings from "./AuditSettings";
 
 export function SettingsPanel() {
   const [apiKey, setApiKey] = useState("");

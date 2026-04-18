@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import { ErrorComponent } from "../../common/ErrorComponent";
-import { Loading } from "../../common/Loading";
-import { ViolationList } from "./ViolationList";
+
+import { CheckCircle } from "lucide-react";
+
 import type { AuditResult } from "../../../types";
 import { saveAuditResultToLocal, tabValidator } from "../../../utils";
 import { ACTIONS, ERROR_MESSAGES, UI_MESSAGES } from "../../../utils/constant";
-import { CheckCircle } from "lucide-react";
+import { ErrorComponent } from "../../common/ErrorComponent";
+import { Loading } from "../../common/Loading";
+import { ViolationList } from "./ViolationList";
 
 export default function ResultsPanel() {
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null);

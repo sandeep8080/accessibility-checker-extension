@@ -1,8 +1,9 @@
 import axe from "axe-core";
+
 import type {
-  MessageAction,
   AuditResult,
   MappedViolation,
+  MessageAction,
   Severity,
 } from "../types";
 import { ACTIONS, ERROR_MESSAGES } from "../utils/constant";

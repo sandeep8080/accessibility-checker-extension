@@ -1,9 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
 import type {
-  MappedViolation,
-  AISuggestion,
-  MessageAction,
   AIProvider,
+  AISuggestion,
+  MappedViolation,
+  MessageAction,
 } from "../types";
 import { saveAuditResultToLocal, tabValidator } from "../utils";
 import { ACTIONS, ERROR_MESSAGES } from "../utils/constant";
