@@ -1,4 +1,5 @@
-import { Sparkles, AlertCircle, ChevronUp } from "lucide-react";
+import { AlertCircle, ChevronUp, Sparkles } from "lucide-react";
+
 import type { AISuggestion as AISuggestionType } from "../../../types";
 import { UI_MESSAGES } from "../../../utils/constant";
 
