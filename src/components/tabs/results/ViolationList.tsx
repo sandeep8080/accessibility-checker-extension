@@ -1,4 +1,5 @@
-import { AlertTriangle, AlertCircle, Info } from "lucide-react";
+import { AlertCircle, AlertTriangle, Info } from "lucide-react";
+
 import type { MappedViolation, Severity } from "../../../types";
 import { ViolationCard } from "./ViolationCard";
 

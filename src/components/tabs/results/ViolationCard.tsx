@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { ExternalLink, Code } from "lucide-react";
+
+import { Code, ExternalLink } from "lucide-react";
+
 import type {
-  MappedViolation,
   AISuggestion as AISuggestionType,
+  MappedViolation,
 } from "../../../types";
+import { ACTIONS, ERROR_MESSAGES } from "../../../utils/constant";
 import { SeverityBadge } from "../../SeverityBadge";
 import { AISuggestion } from "./AISuggestion";
-import { ACTIONS, ERROR_MESSAGES } from "../../../utils/constant";
 
 interface ViolationCardProps {
   violation: MappedViolation;

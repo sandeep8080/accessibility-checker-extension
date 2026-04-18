@@ -1,4 +1,5 @@
 import { AlertCircle } from "lucide-react";
+
 import { UI_MESSAGES } from "../../utils/constant";
 
 interface ErrorComponentProps {

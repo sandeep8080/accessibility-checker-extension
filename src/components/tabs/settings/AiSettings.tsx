@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Key, Eye, EyeOff } from "lucide-react";
+
+import { Eye, EyeOff, Key } from "lucide-react";
+
 import type { AIProvider } from "../../../types";
 import { UI_MESSAGES } from "../../../utils/constant";
 
