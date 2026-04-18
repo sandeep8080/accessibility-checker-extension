@@ -1,5 +1,7 @@
 # Accessibility Checker Chrome Extension 🛡️
 
+![CI](https://github.com/sandeep8080/accessibility-checker-extension/actions/workflows/ci.yml/badge.svg)
+
 A modern, AI-powered Chrome Extension designed to seamlessly audit webpages for WCAG 2.1 accessibility violations and provide immediate, intelligent code-level remediation suggestions.
 
 This project was built to empower developers to create more accessible web experiences with zero friction, directly from their browser.
@@ -105,10 +107,10 @@ The `RUN_AUDIT` workflow is the core functionality of the extension. It is respo
 
 #### Trigger Points
 
-| # | Trigger | Origin | Entry Point |
-|---|---------|--------|-------------|
-| 1 | **Extension opened** | User clicks the extension icon | `App.tsx` → `useEffect` on mount |
-| 2 | **Keyboard shortcut** | User presses the configured hotkey | `manifest.json` → `service-worker.ts` → `chrome.commands.onCommand` |
+| #   | Trigger               | Origin                             | Entry Point                                                         |
+| --- | --------------------- | ---------------------------------- | ------------------------------------------------------------------- |
+| 1   | **Extension opened**  | User clicks the extension icon     | `App.tsx` → `useEffect` on mount                                    |
+| 2   | **Keyboard shortcut** | User presses the configured hotkey | `manifest.json` → `service-worker.ts` → `chrome.commands.onCommand` |
 
 ---
 
@@ -196,11 +198,11 @@ flowchart TD
 - **Reactive UI** — `App.tsx` listens to `chrome.storage.onChanged` for `auditResults`, `auditInProgress`, and `auditError` keys. It no longer cares _who_ triggered the audit.
 - **Centralized state contract** — Loading, error, and result states all live in `chrome.storage.local` under well-defined keys:
 
-  | Storage Key | Type | Purpose |
-  |---|---|---|
-  | `auditResults` | `AuditResult` | The latest audit result payload |
-  | `auditInProgress` | `boolean` | Controls the loading spinner in the UI |
-  | `auditError` | `string` | Propagates error messages to the UI |
+  | Storage Key       | Type          | Purpose                                |
+  | ----------------- | ------------- | -------------------------------------- |
+  | `auditResults`    | `AuditResult` | The latest audit result payload        |
+  | `auditInProgress` | `boolean`     | Controls the loading spinner in the UI |
+  | `auditError`      | `string`      | Propagates error messages to the UI    |
 
 - **Eliminated the `AUDIT_RESULT` action** — The extra message hop from service worker → popup is no longer needed because storage events handle the propagation.
 
@@ -210,4 +212,3 @@ flowchart TD
 - **Maintainability** — State management logic exists in exactly one place (`chrome.storage.onChanged` listener in `App.tsx`), reducing the surface area for bugs.
 - **Consistent error handling** — All errors are written to `auditError` in storage, and the UI reads them uniformly regardless of the source.
 - **Testability** — Each layer can be tested in isolation: triggers only need to verify they send the right message, storage utilities can be unit-tested against mock storage, and the UI can be tested by simulating storage change events.
-
