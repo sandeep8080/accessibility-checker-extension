@@ -33,6 +33,10 @@ export const ERROR_MESSAGES = {
 
 // ─── UI Messages ─────────────────────────────────────────────────────
 export const UI_MESSAGES = {
+  // Results Panel
+  LANDING_TITLE: "Welcome to Accessibility Checker",
+  LANDING_DESCRIPTION:
+    "Click the button below to run an accessibility audit on the current page and get instant results.",
   // Audit status
   ANALYZING_PAGE: "Analyzing Page...",
   WCAG_COMPLIANCE_CHECK: "Checking for WCAG 2.1 compliance",

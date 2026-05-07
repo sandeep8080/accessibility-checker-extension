@@ -1,8 +1,8 @@
 # Feature Name
 
 **Status:** Draft | In progress | Shipped
-**Date:** DD-MM-YYYY
-**Last updated:** DD-MM-YYYY
+**Date:** YYYY-MM-DD
+**Last updated:** YYYY-MM-DD
 
 ## 1. What are all the states?
 
