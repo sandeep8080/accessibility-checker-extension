@@ -1,6 +1,9 @@
 import type { AuditAction, AuditState } from "../types";
 
-export const reducer = (state: AuditState, action: AuditAction): AuditState => {
+export const reducer = (
+  _state: AuditState,
+  action: AuditAction
+): AuditState => {
   switch (action.type) {
     case "RUN_AUDIT":
       return {
