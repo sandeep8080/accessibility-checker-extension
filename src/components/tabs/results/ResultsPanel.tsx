@@ -20,8 +20,6 @@ export default function ResultsPanel() {
   const [auditState, dispatch] = useReducer(reducer, initialState);
 
   const runAudit = useCallback(async () => {
-    // Set the loading state true & reset the error state
-    // setError(null); // TODO: will do later
     dispatch({ type: "RUN_AUDIT" });
     try {
       // 1. Get active tab
@@ -52,8 +50,6 @@ export default function ResultsPanel() {
         payload:
           err instanceof Error ? err.message : ERROR_MESSAGES.UNEXPECTED_ERROR,
       });
-    } finally {
-      // setIsAuditing(false); // TODO: check later
     }
   }, []);
 
@@ -94,7 +90,11 @@ export default function ResultsPanel() {
       changes: { [key: string]: chrome.storage.StorageChange },
       area: string
     ) => {
-      if (area === "local" && changes.auditInProgress) {
+      if (
+        area === "local" &&
+        changes.auditInProgress &&
+        changes.auditInProgress.newValue === true
+      ) {
         dispatch({
           type: "RUN_AUDIT",
         });
@@ -126,8 +126,8 @@ export default function ResultsPanel() {
   }
   return (
     <div className="flex h-full flex-col">
-      {auditState?.status === "IDLE" && <AuditLanding runAudit={runAudit} />}
-      {auditState?.status === "SUCCESS" && (
+      {auditState.status === "IDLE" && <AuditLanding runAudit={runAudit} />}
+      {auditState.status === "SUCCESS" && (
         <div className="flex min-h-full flex-col p-4">
           {auditState?.auditResult.summary.total === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center p-4 text-center">

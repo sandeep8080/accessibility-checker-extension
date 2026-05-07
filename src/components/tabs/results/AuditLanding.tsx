@@ -1,6 +1,7 @@
 import { ScanLine } from "lucide-react";
 
 import { UI_MESSAGES } from "../../../utils/constant";
+import { getAuditShortcutText } from "../../../utils/platform";
 import { RunAuditButton } from "../../common/RunAuditButton";
 
 const AuditLanding = ({ runAudit }: { runAudit: () => Promise<void> }) => {
@@ -27,7 +28,7 @@ const AuditLanding = ({ runAudit }: { runAudit: () => Promise<void> }) => {
       <div className="text-text-muted mt-5 flex items-center gap-1.5 text-xs">
         <span>or press</span>
         <kbd className="bg-bg-secondary border-border-primary text-text-secondary rounded border px-1.5 py-0.5 font-mono text-[11px]">
-          ⌘⇧U
+          {getAuditShortcutText()}
         </kbd>
       </div>
     </div>

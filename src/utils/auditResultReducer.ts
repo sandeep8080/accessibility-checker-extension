@@ -17,7 +17,9 @@ export const reducer = (state: AuditState, action: AuditAction): AuditState => {
         status: "ERROR",
         error: action.payload,
       };
-    default:
-      return state;
+    default: {
+      const _exhaustiveCheck: never = action;
+      return _exhaustiveCheck;
+    }
   }
 };
