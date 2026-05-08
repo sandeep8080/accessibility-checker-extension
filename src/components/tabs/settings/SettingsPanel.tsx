@@ -41,11 +41,6 @@ export function SettingsPanel() {
     console.log("✅ Conformance level saved:", lvl);
   };
 
-  const onClickAutoAudit = () => {
-    // Toggle auto-audit setting in storage
-    console.log("Auto-Audit toggled");
-  };
-
   const handleSave = async () => {
     await chrome.storage.local.set({
       apiKey: apiKey.trim(),
@@ -76,7 +71,6 @@ export function SettingsPanel() {
         <AuditSettings
           conformanceLvl={conformanceLvl}
           onChangeConformanceLvl={onChangeConformanceLvl}
-          onClickAutoAudit={onClickAutoAudit}
         />
         <Divider />
         {/* <ThemePreference /> */}

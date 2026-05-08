@@ -19,7 +19,11 @@ function App() {
   return (
     <div className="flex h-full flex-col overflow-hidden font-sans">
       <header className="bg-bg-primary border-border-secondary flex-none border-b">
-        <div className="no-scrollbar flex gap-1 overflow-x-auto px-2 pt-2">
+        <div
+          className="no-scrollbar flex gap-1 overflow-x-auto px-2 pt-2"
+          role="tablist"
+          aria-label="Main Tabs"
+        >
           <TabButton
             active={activeTab === "results"}
             onClick={() => setActiveTab("results")}
@@ -44,7 +48,6 @@ function App() {
       <main className="no-scrollbar bg-bg-primary relative min-h-0 flex-1 overflow-y-auto">
         {activeTab === "settings" && <SettingsPanel />}
         {activeTab === "history" && <HistoryPanel />}
-
         {activeTab === "results" && <ResultsPanel />}
       </main>
     </div>

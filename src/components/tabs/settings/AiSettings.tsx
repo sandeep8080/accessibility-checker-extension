@@ -28,10 +28,14 @@ export default function AiSettings({
       </p>
       <div className="space-y-4">
         <div className="space-y-1.5">
-          <label className="text-text-secondary text-sm font-medium">
+          <label
+            className="text-text-secondary text-sm font-medium"
+            htmlFor="provider"
+          >
             AI Provider
           </label>
           <select
+            id="provider"
             value={provider}
             onChange={(e) => onChangeProvider(e)}
             className="border-border-primary bg-bg-secondary text-text-secondary focus:border-accent-primary focus:ring-accent-primary w-full appearance-none rounded-md border px-3 py-2 text-sm outline-none focus:ring-1"
@@ -48,7 +52,10 @@ export default function AiSettings({
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="text-text-secondary text-sm font-medium">
+            <label
+              className="text-text-secondary text-sm font-medium"
+              htmlFor="apiKey"
+            >
               API Key
             </label>
             {provider === "gemini" && (
@@ -64,6 +71,7 @@ export default function AiSettings({
           </div>
           <div className="relative">
             <input
+              id="apiKey"
               type={isVisible ? "text" : "password"}
               value={apiKey}
               onChange={(e) => onChangeApiKey(e)}
