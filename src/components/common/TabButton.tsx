@@ -11,6 +11,9 @@ export default function TabButton({
 }) {
   return (
     <button
+      role="switch"
+      aria-checked={active}
+      type="button"
       onClick={onClick}
       className={`flex flex-1 items-center justify-center gap-2 rounded-t-lg border-b-2 px-2 py-3 text-sm font-medium transition-all ${
         active

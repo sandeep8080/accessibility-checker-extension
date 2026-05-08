@@ -16,6 +16,7 @@ export const ErrorComponent = ({ error, runAudit }: ErrorComponentProps) => {
       </h2>
       <p className="text-text-muted max-w-[250px] text-sm">{error}</p>
       <button
+        type="button"
         onClick={() => runAudit()}
         className="bg-bg-secondary border-border-base hover:bg-bg-tertiary mt-6 rounded-md border px-4 py-2 text-sm font-medium transition-colors"
       >
