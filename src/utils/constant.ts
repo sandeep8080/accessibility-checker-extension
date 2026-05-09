@@ -29,6 +29,11 @@ export const ERROR_MESSAGES = {
   UNEXPECTED_ERROR:
     "An unexpected error occurred. You might need to refresh the page.",
   UNEXPECTED_ERROR_GENERIC: "An unexpected error occurred",
+
+  // Error Boundary Message
+  ERROR_BOUNDARY_TITLE: "Something went wrong",
+  ERROR_BOUNDARY_DESCRIPTION:
+    "An unexpected error occurred while rendering the app. Please try again in sometime",
 } as const;
 
 // ─── UI Messages ─────────────────────────────────────────────────────
