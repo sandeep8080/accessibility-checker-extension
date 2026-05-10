@@ -1,6 +1,7 @@
 # Accessibility Checker Chrome Extension 🛡️
 
 ![CI](https://github.com/sandeep8080/accessibility-checker-extension/actions/workflows/ci.yml/badge.svg)
+[![release-please](https://github.com/sandeep8080/accessibility-checker-extension/actions/workflows/release-please.yml/badge.svg?branch=master)](https://github.com/sandeep8080/accessibility-checker-extension/actions/workflows/release-please.yml)
 
 A modern, AI-powered Chrome Extension designed to seamlessly audit webpages for WCAG 2.1 accessibility violations and provide immediate, intelligent code-level remediation suggestions.
 
