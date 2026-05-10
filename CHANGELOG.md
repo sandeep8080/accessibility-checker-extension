@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/sandeep8080/accessibility-checker-extension/compare/v1.0.0...v1.0.1) (2026-05-10)
+
+
+### Bug Fixes
+
+* update extension icons and remove deprecated icon file ([02891d5](https://github.com/sandeep8080/accessibility-checker-extension/commit/02891d5d7be146a289bc3ccbce19bbe005abfdfb))
+
 ## 1.0.0 (2026-05-09)
 
 
