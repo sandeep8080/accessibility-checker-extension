@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/sandeep8080/accessibility-checker-extension/compare/v1.0.1...v1.1.0) (2026-05-11)
+
+
+### Features
+
+* enhance manifest CSP for production & local ([b6b5f9b](https://github.com/sandeep8080/accessibility-checker-extension/commit/b6b5f9b8f2672aa1f66b843975f86b85f01ad17e))
+
 ## [1.0.1](https://github.com/sandeep8080/accessibility-checker-extension/compare/v1.0.0...v1.0.1) (2026-05-10)
 
 
