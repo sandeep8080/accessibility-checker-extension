@@ -13,7 +13,7 @@ This project was built to empower developers to create more accessible web exper
 
 - **One-Click Auditing:** Instantly scan any webpage for WCAG 2.1 AA violations.
 - **Categorized Results:** Sorts issues into intuitive Severity groups (Errors, Warnings, Notices).
-- **AI-Powered Code Fixes:** Leverages Google Gemini 2.0 to explain _why_ an element fails and provides the exact React/HTML snippet to fix it.
+- **AI-Powered Code Fixes:** Leverages Google Gemini models to explain _why_ an element fails and provides the exact React/HTML snippet to fix it.
 - **Audit History:** Automatically saves your last 50 audits locally, with the ability to export them as raw JSON datasets.
 - **BYOK (Bring Your Own Key):** Secure local storage integration to manage your own AI API keys.
 
@@ -39,6 +39,7 @@ Because this project is built using modern tooling, hot-reloading works flawless
    - Enable the **"Developer mode"** toggle (top right corner).
    - Click the **"Load unpacked"** button.
    - Select the \`dist\` directory located inside your project folder.
+
 4. **Develop with HMR:**
    - Pin the extension to your toolbar.
    - Any changes you make to the React UI will instantly reflect in the popup—try changing a color in \`src/App.tsx\`!
@@ -98,7 +99,7 @@ The \`public/manifest.json\` is the "blueprint" that Chrome reads to understand 
 | **axe-core**              | Accessibility Engine | The absolute gold standard of automated accessibility testing. Maintained by Deque Systems, it is the exact same engine that powers Google Lighthouse and Microsoft Accessibility Insights.                                                                                                                  |
 | **Tailwind CSS (v4)**     | Styling              | Allows for rapid prototyping of a premium, dark-mode-first aesthetic without writing bloated CSS files. V4 introduces lightning-fast engine compiling without needing a \`tailwind.config.js\` file.                                                                                                         |
 | **Lucide React**          | Iconography          | Lightweight, crisp, and neutral SVG icons that easily match modern interface design patterns.                                                                                                                                                                                                                |
-| **@google/generative-ai** | AI Integration       | The official SDK to interact with Gemini 2.0 Flash. We chose Gemini Flash because it is incredibly fast (crucial for a snappy UI), accurate for code generation, and currently offers a generous free tier for developers.                                                                                   |
+| **@google/generative-ai** | AI Integration       | The official SDK to interact with Gemini 3.0 Flash. We chose Gemini Flash because it is incredibly fast (crucial for a snappy UI), accurate for code generation, and currently offers a generous free tier for developers.                                                                                   |
 
 ## 📝 Learnings
 

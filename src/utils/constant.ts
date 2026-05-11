@@ -1,3 +1,7 @@
+export const AI_CONFIG = {
+  GEMINI_MODEL: "gemini-3-flash-preview",
+};
+
 // ─── Message Action Types ────────────────────────────────────────────
 export const ACTIONS = {
   RUN_AUDIT: "RUN_AUDIT",
