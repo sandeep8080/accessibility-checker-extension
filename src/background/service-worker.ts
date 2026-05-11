@@ -7,7 +7,7 @@ import type {
   MessageAction,
 } from "../types";
 import { saveAuditResultToLocal, tabValidator } from "../utils";
-import { ACTIONS, ERROR_MESSAGES } from "../utils/constant";
+import { ACTIONS, AI_CONFIG, ERROR_MESSAGES } from "../utils/constant";
 
 // In-memory cache fallback in case chrome.storage.session isn't available
 const memoryCache = new Map<string, AISuggestion>();
@@ -56,7 +56,7 @@ async function generateGeminiSuggestion(
   violation: MappedViolation
 ): Promise<AISuggestion> {
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+  const model = genAI.getGenerativeModel({ model: AI_CONFIG.GEMINI_MODEL });
 
   const prompt = `You are an expert accessibility developer and WCAG 2.1 specialist.
 Analyze the following accessibility violation and provide a structured JSON response.

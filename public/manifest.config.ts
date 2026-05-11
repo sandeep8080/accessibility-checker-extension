@@ -10,7 +10,7 @@ const [major, minor, patch, label = "0"] = version
   .replace(/[^\d.-]+/g, "")
   .split(/[.-]/);
 
-export default defineManifest(async () => ({
+export default defineManifest(async (env) => ({
   manifest_version: 3,
   name: "Accessibility Checker Extension",
   version: `${major}.${minor}.${patch}.${label}`,
@@ -39,7 +39,9 @@ export default defineManifest(async () => ({
   ],
   content_security_policy: {
     extension_pages:
-      "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com http://localhost:* ws://localhost:* wss://localhost:*;",
+      env.mode === "production"
+        ? "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com"
+        : "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com http://localhost:* ws://localhost:* wss://localhost:*;",
   },
   commands: {
     "run-audit": {

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { CheckCircle2, Save, Trash2 } from "lucide-react";
 
 import type { AIProvider } from "../../../types";
-// import { ThemePreference } from "./ThemePreference";
 import { Divider } from "../../common/Divider";
 import AiSettings from "./AiSettings";
 import AuditSettings from "./AuditSettings";
@@ -73,7 +72,6 @@ export function SettingsPanel() {
           onChangeConformanceLvl={onChangeConformanceLvl}
         />
         <Divider />
-        {/* <ThemePreference /> */}
 
         {/* Button Container */}
         <div className="flex gap-3 pt-2">
@@ -91,7 +89,7 @@ export function SettingsPanel() {
             className="border-border-primary bg-bg-secondary text-text-secondary hover:border-status-error/30 hover:bg-status-error/20 hover:text-status-error flex items-center justify-center gap-2 rounded-md border px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Trash2 size={16} />
-            Clear
+            Clear API Key
           </button>
         </div>
       </div>
