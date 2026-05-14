@@ -1,12 +1,15 @@
 import { ShieldCheck } from "lucide-react";
 
-export default function AuditSettings({
-  conformanceLvl,
-  onChangeConformanceLvl,
-}: {
-  conformanceLvl: string;
-  onChangeConformanceLvl: (lvl: string) => void;
-}) {
+import { useSettings } from "../../../../hooks/useSettings";
+import type { ConformanceLvl } from "../../../../types";
+
+export default function AuditSettings() {
+  const { settings, updateSettings } = useSettings();
+  const { conformanceLvl } = settings.audit;
+
+  const onChangeConformanceLvl = async (lvl: string) => {
+    updateSettings("audit", { conformanceLvl: lvl as ConformanceLvl });
+  };
   return (
     <div>
       <h2 className="text-text-primary flex items-center gap-2 text-lg font-semibold">
