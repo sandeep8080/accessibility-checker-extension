@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { type AppSettings, DEFAULT_SETTINGS } from "../types/settings";
-import { SettingsContext } from "./SettingContext";
-
-const STORAGE_KEY = "appSettings";
+import { STORAGE_KEY } from "../utils/constant";
+import { SettingsContext } from "./SettingsContext";
 
 // 2. Provide the context
 
@@ -43,7 +42,7 @@ export const SettingsProvider = ({
   };
 
   /** Reset Function
-   * After the rest there are 2 options to sync the state
+   * After the reset there are 2 options to sync the state
    * 1. update the react local state
    * 2. Listen to the onchange to the chrome.storage.onChange
    *

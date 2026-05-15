@@ -8,6 +8,8 @@ export const AI_PROVIDER_CONFIG = {
   },
 };
 
+export const STORAGE_KEY = "appSettings";
+
 // ─── Message Action Types ────────────────────────────────────────────
 export const ACTIONS = {
   RUN_AUDIT: "RUN_AUDIT",

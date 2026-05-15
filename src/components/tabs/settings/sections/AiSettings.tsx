@@ -26,7 +26,10 @@ export default function AiSettings() {
 
   return (
     <section aria-labelledby="ai-settings-heading">
-      <h2 className="text-text-primary flex items-center gap-2 text-lg font-semibold">
+      <h2
+        id="ai-settings-heading"
+        className="text-text-primary flex items-center gap-2 text-lg font-semibold"
+      >
         <Key className="text-accent-foreground" size={20} aria-hidden />
         API Configuration
       </h2>
