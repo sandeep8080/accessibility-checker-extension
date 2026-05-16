@@ -6,8 +6,14 @@ import type {
   MappedViolation,
   MessageAction,
 } from "../types";
+import type { AppSettings } from "../types/settings";
 import { saveAuditResultToLocal, tabValidator } from "../utils";
-import { ACTIONS, AI_CONFIG, ERROR_MESSAGES } from "../utils/constant";
+import {
+  ACTIONS,
+  AI_CONFIG,
+  ERROR_MESSAGES,
+  STORAGE_KEY,
+} from "../utils/constant";
 
 // In-memory cache fallback in case chrome.storage.session isn't available
 const memoryCache = new Map<string, AISuggestion>();
@@ -41,11 +47,12 @@ async function getApiKey(): Promise<{
   key: string;
   provider: AIProvider;
 } | null> {
-  const result = await chrome.storage.local.get(["apiKey", "aiProvider"]);
-  return result.apiKey
+  const result = await chrome.storage.local.get([STORAGE_KEY]);
+  const { provider, apiKeys } = (result.appSettings as AppSettings).ai;
+  return apiKeys[provider]
     ? {
-        key: result.apiKey as string,
-        provider: (result.aiProvider as AIProvider) || "gemini",
+        key: apiKeys[provider] as string,
+        provider: (provider as AIProvider) || "gemini",
       }
     : null;
 }

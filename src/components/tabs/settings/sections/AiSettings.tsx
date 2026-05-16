@@ -1,26 +1,45 @@
 import { useState } from "react";
 
-import { Eye, EyeOff, Key } from "lucide-react";
+import { CheckCircle2, Eye, EyeOff, Key, Save } from "lucide-react";
 
-import type { AIProvider } from "../../../types";
-import { UI_MESSAGES } from "../../../utils/constant";
+import { useAppSettings } from "../../../../hooks/useAppSettings";
+import type { AIProvider } from "../../../../types";
+import { AI_PROVIDER_CONFIG, UI_MESSAGES } from "../../../../utils/constant";
 
-export default function AiSettings({
-  apiKey,
-  provider,
-  onChangeApiKey,
-  onChangeProvider,
-}: {
-  apiKey: string;
-  provider: AIProvider;
-  onChangeApiKey: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeProvider: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}) {
+export default function AiSettings() {
+  const [isSaved, setIsSaved] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const { settings, setSettings, updateSettings, saveApiKeyToLocal } =
+    useAppSettings();
+  const { apiKeys, provider } = settings.ai;
+
+  const onChangeApiKey = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettings((prev) => ({
+      ...prev,
+      ai: {
+        ...prev.ai,
+        apiKeys: {
+          ...prev.ai.apiKeys,
+          [provider]: e.target.value,
+        },
+      },
+    }));
+  };
+
+  const onChangeProvider = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    updateSettings("ai", { provider: e.target.value as AIProvider });
+  };
+
+  const handleSave = async () => {
+    await saveApiKeyToLocal();
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 2000);
+  };
+
   return (
-    <div>
+    <section aria-labelledby="ai-settings-heading">
       <h2 className="text-text-primary flex items-center gap-2 text-lg font-semibold">
-        <Key className="text-accent-foreground" size={20} />
+        <Key className="text-accent-foreground" size={20} aria-hidden />
         API Configuration
       </h2>
       <p className="text-text-muted text-sm">
@@ -60,7 +79,7 @@ export default function AiSettings({
             </label>
             {provider === "gemini" && (
               <a
-                href="https://aistudio.google.com/apikey"
+                href={AI_PROVIDER_CONFIG[provider].url}
                 target="_blank"
                 rel="noreferrer"
                 className="text-status-info text-xs underline hover:opacity-80"
@@ -73,7 +92,7 @@ export default function AiSettings({
             <input
               id="apiKey"
               type={isVisible ? "text" : "password"}
-              value={apiKey}
+              value={apiKeys?.[provider] || ""}
               onChange={(e) => onChangeApiKey(e)}
               placeholder="Enter your API key..."
               className="border-border-primary bg-bg-secondary text-text-secondary focus:border-accent-primary focus:ring-accent-primary w-full rounded-md border py-2 pr-10 pl-3 text-sm outline-none focus:ring-1"
@@ -86,8 +105,20 @@ export default function AiSettings({
               {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
+          <button
+            type="button"
+            onClick={handleSave}
+            className="bg-accent-primary hover:bg-accent-secondary flex flex-1 items-center justify-center gap-2 rounded-md py-2 text-sm font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isSaved ? (
+              <CheckCircle2 size={16} aria-hidden />
+            ) : (
+              <Save size={16} aria-hidden />
+            )}
+            {isSaved ? "Saved!" : "Save key"}
+          </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

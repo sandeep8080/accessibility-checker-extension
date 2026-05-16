@@ -3,6 +3,7 @@ import type { Result } from "axe-core";
 export type Severity = "error" | "warning" | "notice";
 
 export type AIProvider = "gemini" | "claude" | "groq";
+export type ConformanceLvl = "A" | "AA" | "AAA";
 
 export interface MappedViolation extends Result {
   severity: Severity;
