@@ -2,6 +2,14 @@ export const AI_CONFIG = {
   GEMINI_MODEL: "gemini-3-flash-preview",
 };
 
+export const AI_PROVIDER_CONFIG = {
+  gemini: {
+    url: "https://aistudio.google.com/apikey",
+  },
+};
+
+export const STORAGE_KEY = "appSettings";
+
 // ─── Message Action Types ────────────────────────────────────────────
 export const ACTIONS = {
   RUN_AUDIT: "RUN_AUDIT",
