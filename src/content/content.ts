@@ -6,7 +6,8 @@ import type {
   MessageAction,
   Severity,
 } from "../types";
-import { ACTIONS, ERROR_MESSAGES } from "../utils/constant";
+import type { AppSettings } from "../types/settings";
+import { ACTIONS, ERROR_MESSAGES, STORAGE_KEY } from "../utils/constant";
 
 // Map axe-core impact levels to our Severity type
 const severityMap: Record<string, Severity> = {
@@ -51,12 +52,12 @@ const conformanceTagMap: Record<string, string[]> = {
 
 async function runAudit(): Promise<AuditResult> {
   try {
-    const storage = await chrome.storage.local.get("conformanceLvl");
-    const lvl = (storage.conformanceLvl as string) || "AA";
-    const tags = conformanceTagMap[lvl] || conformanceTagMap["AA"];
+    const storage = await chrome.storage.local.get([STORAGE_KEY]);
+    const { conformanceLvl } = (storage.appSettings as AppSettings).audit;
+    const tags = conformanceTagMap[conformanceLvl] || conformanceTagMap["AA"];
 
     console.log("🚀 Starting accessibility audit");
-    console.log("   Level:", lvl);
+    console.log("   Level:", conformanceLvl);
     console.log("   Tags:", tags);
 
     const results = await axe.run({

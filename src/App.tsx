@@ -11,6 +11,7 @@ import ErrorBoundary from "./components/error/ErrorBoundary";
 import { HistoryPanel } from "./components/HistoryPanel";
 import ResultsPanel from "./components/tabs/results/ResultsPanel";
 import { SettingsPanel } from "./components/tabs/settings/SettingsPanel";
+import AppSettingsProvider from "./context/AppSettingsProvider";
 
 type Tab = "results" | "history" | "settings";
 
@@ -48,7 +49,10 @@ function App() {
         </header>
 
         <main className="no-scrollbar bg-bg-primary relative min-h-0 flex-1 overflow-y-auto">
-          {activeTab === "settings" && <SettingsPanel />}
+          <AppSettingsProvider>
+            {activeTab === "settings" && <SettingsPanel />}
+          </AppSettingsProvider>
+
           {activeTab === "history" && <HistoryPanel />}
           {activeTab === "results" && <ResultsPanel />}
         </main>

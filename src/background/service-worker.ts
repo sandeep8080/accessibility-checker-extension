@@ -6,8 +6,14 @@ import type {
   MappedViolation,
   MessageAction,
 } from "../types";
+import { type AppSettings, DEFAULT_SETTINGS } from "../types/settings";
 import { saveAuditResultToLocal, tabValidator } from "../utils";
-import { ACTIONS, AI_CONFIG, ERROR_MESSAGES } from "../utils/constant";
+import {
+  ACTIONS,
+  AI_CONFIG,
+  ERROR_MESSAGES,
+  STORAGE_KEY,
+} from "../utils/constant";
 
 // In-memory cache fallback in case chrome.storage.session isn't available
 const memoryCache = new Map<string, AISuggestion>();
@@ -41,11 +47,17 @@ async function getApiKey(): Promise<{
   key: string;
   provider: AIProvider;
 } | null> {
-  const result = await chrome.storage.local.get(["apiKey", "aiProvider"]);
-  return result.apiKey
+  const result = await chrome.storage.local.get([STORAGE_KEY]);
+  // Consider a use-case when user load the extensions and without come to settings tab run the audit and use AI features.
+  // Then result.appSettings can we undefined so handle the key logic accordingly
+  const stored = result?.appSettings as AppSettings | undefined;
+  const provider = stored?.ai?.provider || DEFAULT_SETTINGS.ai.provider;
+  const key = stored?.ai?.apiKeys?.[provider];
+
+  return key
     ? {
-        key: result.apiKey as string,
-        provider: (result.aiProvider as AIProvider) || "gemini",
+        key: key as string,
+        provider: provider as AIProvider,
       }
     : null;
 }
