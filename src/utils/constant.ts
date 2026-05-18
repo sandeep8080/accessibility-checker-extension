@@ -1,5 +1,13 @@
+export const STORAGE_KEY = "appSettings";
+
 export const AI_CONFIG = {
   GEMINI_MODEL: "gemini-3-flash-preview",
+};
+
+export const AI_PROVIDER_CONFIG = {
+  gemini: {
+    url: "https://aistudio.google.com/apikey",
+  },
 };
 
 // ─── Message Action Types ────────────────────────────────────────────
@@ -64,6 +72,14 @@ export const UI_MESSAGES = {
   AI_HOW_TO_FIX: "How to fix it",
 
   // Settings
-  API_CONFIG_DESCRIPTION:
-    "To enable AI fix suggestions, you need to provide an API key. Your key is stored securely in your browser's local storage and is never sent to any server other than the AI provider.",
+  API_CONFIG_DESCRIPTION: "Add an API key to enable AI fix suggestions",
+  AUDIT_SECTION_TITLE: "WCAG Conformance Level",
+  AI_SECTION_TITLE: "API Configuration",
+  AI_PROVIDER_LABEL: "AI Provider",
+  AI_API_KEY_LABEL: "API Key",
 } as const;
+
+export const CTA = {
+  RESET: "Reset all",
+  GET_A_FREE_KEY_LINK: "Get a free key",
+};
