@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/sandeep8080/accessibility-checker-extension/compare/v1.1.0...v1.2.0) (2026-05-18)
+
+
+### Features
+
+* **settings:** Centralize App Settings with Context + Hook Pattern ([#21](https://github.com/sandeep8080/accessibility-checker-extension/issues/21)) ([51676fa](https://github.com/sandeep8080/accessibility-checker-extension/commit/51676fa7f98f7c7523216e998b486e151b2a293b))
+
 ## [1.1.0](https://github.com/sandeep8080/accessibility-checker-extension/compare/v1.0.1...v1.1.0) (2026-05-11)
 
 
