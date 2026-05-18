@@ -6,7 +6,7 @@ import type {
   MessageAction,
   Severity,
 } from "../types";
-import type { AppSettings } from "../types/settings";
+import { type AppSettings, DEFAULT_SETTINGS } from "../types/settings";
 import { ACTIONS, ERROR_MESSAGES, STORAGE_KEY } from "../utils/constant";
 
 // Map axe-core impact levels to our Severity type
@@ -52,12 +52,16 @@ const conformanceTagMap: Record<string, string[]> = {
 
 async function runAudit(): Promise<AuditResult> {
   try {
-    const storage = await chrome.storage.local.get([STORAGE_KEY]);
-    const { conformanceLvl } = (storage.appSettings as AppSettings).audit;
-    const tags = conformanceTagMap[conformanceLvl] || conformanceTagMap["AA"];
+    // Consider a use-case when user load the extensions and without come to settings tab run the audit and use AI features.
+    // Then result.appSettings can we undefined so handle the key logic accordingly
+    const result = await chrome.storage.local.get([STORAGE_KEY]);
+    const storage = result?.[STORAGE_KEY] as AppSettings | undefined;
+    const lvl =
+      storage?.audit?.conformanceLvl ?? DEFAULT_SETTINGS.audit.conformanceLvl;
+    const tags = conformanceTagMap[lvl];
 
     console.log("🚀 Starting accessibility audit");
-    console.log("   Level:", conformanceLvl);
+    console.log("   Level:", lvl);
     console.log("   Tags:", tags);
 
     const results = await axe.run({

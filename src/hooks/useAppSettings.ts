@@ -5,7 +5,7 @@ import AppSettingsContext from "../context/AppSettingsContext";
 const useAppSettings = () => {
   const context = useContext(AppSettingsContext);
   if (!context) {
-    throw new Error("useSettings must be used within SettingsProvider");
+    throw new Error("useAppSettings must be used within SettingsProvider");
   }
   return context;
 };

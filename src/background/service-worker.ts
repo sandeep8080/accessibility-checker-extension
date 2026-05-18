@@ -50,7 +50,7 @@ async function getApiKey(): Promise<{
   const result = await chrome.storage.local.get([STORAGE_KEY]);
   // Consider a use-case when user load the extensions and without come to settings tab run the audit and use AI features.
   // Then result.appSettings can we undefined so handle the key logic accordingly
-  const stored = result?.appSettings as AppSettings | undefined;
+  const stored = result?.[STORAGE_KEY] as AppSettings | undefined;
   const provider = stored?.ai?.provider || DEFAULT_SETTINGS.ai.provider;
   const key = stored?.ai?.apiKeys?.[provider];
 

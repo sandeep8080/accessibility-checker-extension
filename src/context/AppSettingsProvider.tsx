@@ -11,14 +11,13 @@ const AppSettingsProvider = ({ children }: { children: React.ReactNode }) => {
   // Load saved Settings
   useEffect(() => {
     chrome.storage.local.get([STORAGE_KEY]).then((result) => {
-      if (result.appSettings) {
-        setSettings({ ...DEFAULT_SETTINGS, ...result.appSettings });
+      if (result[STORAGE_KEY]) {
+        setSettings({ ...DEFAULT_SETTINGS, ...result[STORAGE_KEY] });
       }
     });
   }, []);
 
   // Update the settings both locally & in Chrome storage
-
   const updateSettings = async (
     section: keyof AppSettings,
     data: Partial<AppSettings[keyof AppSettings]>
@@ -35,8 +34,6 @@ const AppSettingsProvider = ({ children }: { children: React.ReactNode }) => {
     // Update the storage
     await chrome.storage.local.set({ [STORAGE_KEY]: updates });
   };
-
-  // Save API Key to storage
 
   // Reset the App settings
   const resetSettings = async () => {
