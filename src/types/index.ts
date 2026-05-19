@@ -12,12 +12,12 @@ export interface MappedViolation extends Result {
 export type AuditState =
   | { status: "IDLE" | "AUDITING" }
   | { status: "SUCCESS"; auditResult: AuditResult }
-  | { status: "ERROR"; error: string };
+  | { status: "ERROR"; error: AuditError };
 
 export type AuditAction =
   | { type: "RUN_AUDIT" }
   | { type: "AUDIT_SUCCESS"; payload: AuditResult }
-  | { type: "AUDIT_ERROR"; payload: string };
+  | { type: "AUDIT_ERROR"; payload: AuditError };
 
 export interface AuditSummary {
   error: number;
@@ -31,6 +31,11 @@ export interface AuditResult {
   timestamp: string;
   summary: AuditSummary;
   violations: MappedViolation[];
+}
+
+export interface AuditError {
+  timestamp: string;
+  message: string;
 }
 
 export interface AISuggestion {

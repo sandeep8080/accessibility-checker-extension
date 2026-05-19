@@ -5,16 +5,21 @@ import { CheckCircle2, ShieldCheck } from "lucide-react";
 import useAppSettings from "../../../../hooks/useAppSettings";
 import type { ConformanceLvl } from "../../../../types";
 import { UI_MESSAGES } from "../../../../utils/constant";
+import { ToggleButton } from "../../../common/ToggleButton";
 
 export default function AuditSettings() {
   const { settings, updateSettings } = useAppSettings();
-  const { conformanceLvl } = settings.audit;
+  const { conformanceLvl, includeBestPractices } = settings.audit;
   const [justSaved, setJustSaved] = useState(false);
 
   const onChangeConformanceLvl = async (lvl: string) => {
     updateSettings("audit", { conformanceLvl: lvl as ConformanceLvl });
     setJustSaved(true);
     setTimeout(() => setJustSaved(false), 2000);
+  };
+
+  const handleToggle = (value: boolean) => {
+    updateSettings("audit", { includeBestPractices: value });
   };
 
   return (
@@ -55,6 +60,11 @@ export default function AuditSettings() {
             )}
           </div>
         </div>
+        <ToggleButton
+          name="best-practice"
+          isEnabled={includeBestPractices}
+          handleToggle={handleToggle}
+        />
       </div>
     </section>
   );

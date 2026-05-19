@@ -2,7 +2,7 @@ import { useCallback, useEffect, useReducer } from "react";
 
 import { CheckCircle } from "lucide-react";
 
-import type { AuditResult, AuditState } from "../../../types";
+import type { AuditError, AuditResult, AuditState } from "../../../types";
 import { saveAuditResultToLocal, tabValidator } from "../../../utils";
 import { reducer } from "../../../utils/auditResultReducer";
 import { ACTIONS, ERROR_MESSAGES, UI_MESSAGES } from "../../../utils/constant";
@@ -40,15 +40,23 @@ export default function ResultsPanel() {
       } else {
         dispatch({
           type: "AUDIT_ERROR",
-          payload: ERROR_MESSAGES.AUDIT_TAB_INACCESSIBLE,
+          payload: {
+            message: ERROR_MESSAGES.AUDIT_TAB_INACCESSIBLE,
+            timestamp: new Date().toISOString(),
+          },
         });
       }
     } catch (err: unknown) {
       console.error("Audit Error:", err);
       dispatch({
         type: "AUDIT_ERROR",
-        payload:
-          err instanceof Error ? err.message : ERROR_MESSAGES.UNEXPECTED_ERROR,
+        payload: {
+          message:
+            err instanceof Error
+              ? err.message
+              : ERROR_MESSAGES.UNEXPECTED_ERROR,
+          timestamp: new Date().toISOString(),
+        },
       });
     }
   }, []);
@@ -108,6 +116,17 @@ export default function ResultsPanel() {
         dispatch({
           type: "AUDIT_SUCCESS",
           payload: changes.auditResults.newValue as AuditResult,
+        });
+      }
+      // Listen to the changes in the error state as well
+      if (
+        area === "local" &&
+        changes.auditError &&
+        changes.auditError.newValue
+      ) {
+        dispatch({
+          type: "AUDIT_ERROR",
+          payload: changes.auditError.newValue as AuditError,
         });
       }
     };

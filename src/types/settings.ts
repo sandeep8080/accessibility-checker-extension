@@ -7,6 +7,7 @@ export interface AppSettings {
   };
   audit: {
     conformanceLvl: ConformanceLvl;
+    includeBestPractices: boolean;
   };
 }
 
@@ -17,5 +18,6 @@ export const DEFAULT_SETTINGS: AppSettings = {
   },
   audit: {
     conformanceLvl: "AA",
+    includeBestPractices: false,
   },
 };

@@ -58,7 +58,11 @@ async function runAudit(): Promise<AuditResult> {
     const storage = result?.[STORAGE_KEY] as AppSettings | undefined;
     const lvl =
       storage?.audit?.conformanceLvl ?? DEFAULT_SETTINGS.audit.conformanceLvl;
-    const tags = conformanceTagMap[lvl];
+    const includeBestPractices = storage?.audit?.includeBestPractices ?? false;
+    const tags = [...conformanceTagMap[lvl]];
+    if (includeBestPractices) {
+      tags.push("best-practice");
+    }
 
     console.log("🚀 Starting accessibility audit");
     console.log("   Level:", lvl);
