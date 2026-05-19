@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/sandeep8080/accessibility-checker-extension/compare/v1.2.0...v1.3.0) (2026-05-19)
+
+
+### Features
+
+* **audit:** add best practices toggle and enhance error handling ([#23](https://github.com/sandeep8080/accessibility-checker-extension/issues/23)) ([ea0592a](https://github.com/sandeep8080/accessibility-checker-extension/commit/ea0592abf162e54d8cdbf4620a473ded2412f764))
+
 ## [1.2.0](https://github.com/sandeep8080/accessibility-checker-extension/compare/v1.1.0...v1.2.0) (2026-05-18)
 
 
