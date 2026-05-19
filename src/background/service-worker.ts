@@ -153,8 +153,11 @@ async function handleAISuggestion(
 chrome.commands.onCommand.addListener(async (command, tab) => {
   if (command === "run-audit") {
     if (tabValidator(tab)) {
-      // Setting the loading state to true
-      await chrome.storage.local.set({ auditInProgress: true });
+      // Setting the loading & error state
+      await chrome.storage.local.set({
+        auditInProgress: true,
+        auditError: null,
+      });
       console.log("Keyboard shortcut triggered: Running accessibility audit");
       const response = await chrome.tabs
         .sendMessage(tab?.id, { action: ACTIONS.RUN_AUDIT })

@@ -31,13 +31,19 @@ export const saveAuditResultToLocal = async (response: AuditResponse) => {
       await saveToHistory(result);
     } else {
       await chrome.storage.local.set({
-        auditError: response?.error || ERROR_MESSAGES.AUDIT_FAILED,
+        auditError: {
+          message: response?.error || ERROR_MESSAGES.AUDIT_FAILED,
+          timestamp: new Date().toISOString(),
+        },
         auditInProgress: false,
       });
     }
   } catch (error) {
     await chrome.storage.local.set({
-      auditError: (error as Error)?.message || ERROR_MESSAGES.AUDIT_SAVE_FAILED,
+      auditError: {
+        message: (error as Error)?.message || ERROR_MESSAGES.AUDIT_SAVE_FAILED,
+        timestamp: new Date().toISOString(),
+      },
       auditInProgress: false,
     });
     // TODO: Need to handle the error use-case & how to show in the audit history

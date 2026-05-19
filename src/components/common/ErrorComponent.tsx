@@ -1,9 +1,10 @@
 import { AlertCircle } from "lucide-react";
 
+import type { AuditError } from "../../types";
 import { UI_MESSAGES } from "../../utils/constant";
 
 interface ErrorComponentProps {
-  error: string;
+  error: AuditError;
   runAudit: () => void;
 }
 
@@ -14,7 +15,7 @@ export const ErrorComponent = ({ error, runAudit }: ErrorComponentProps) => {
       <h2 className="text-status-error mb-2 text-lg font-semibold">
         {UI_MESSAGES.AUDIT_FAILED_TITLE}
       </h2>
-      <p className="text-text-muted max-w-[250px] text-sm">{error}</p>
+      <p className="text-text-muted max-w-[250px] text-sm">{error.message}</p>
       <button
         type="button"
         onClick={() => runAudit()}
