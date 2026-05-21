@@ -1,4 +1,4 @@
-import type { AuditResponse, AuditResult } from "../types";
+import type { AuditError, AuditResponse, AuditResult } from "../types";
 import { ERROR_MESSAGES } from "./constant";
 
 export const tabValidator = (
@@ -30,11 +30,12 @@ export const saveAuditResultToLocal = async (response: AuditResponse) => {
       });
       await saveToHistory(result);
     } else {
+      const errorPayload = createAuditError({
+        caller: "saveAuditResultToLocal",
+        message: response?.error || ERROR_MESSAGES.AUDIT_FAILED,
+      });
       await chrome.storage.local.set({
-        auditError: {
-          message: response?.error || ERROR_MESSAGES.AUDIT_FAILED,
-          timestamp: new Date().toISOString(),
-        },
+        auditError: errorPayload,
         auditInProgress: false,
       });
     }
@@ -56,7 +57,20 @@ export const saveToHistory = async (result: AuditResult) => {
     const history = (data.auditHistory as AuditResult[]) || [];
     const newHistory = [result, ...history].slice(0, 50);
     await chrome.storage.local.set({ auditHistory: newHistory });
-  } catch (e) {
-    console.error("Failed to save history", e);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error(ERROR_MESSAGES.FAILED_TO_SAVE_HISTORY);
   }
 };
+
+export const createAuditError = ({
+  caller,
+  message,
+}: {
+  caller: string;
+  message: string;
+}): AuditError => ({
+  caller,
+  message,
+  timestamp: new Date().toISOString(),
+});

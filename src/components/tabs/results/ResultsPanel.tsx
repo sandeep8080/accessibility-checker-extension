@@ -3,7 +3,11 @@ import { useCallback, useEffect, useReducer } from "react";
 import { CheckCircle } from "lucide-react";
 
 import type { AuditError, AuditResult, AuditState } from "../../../types";
-import { saveAuditResultToLocal, tabValidator } from "../../../utils";
+import {
+  createAuditError,
+  saveAuditResultToLocal,
+  tabValidator,
+} from "../../../utils";
 import { reducer } from "../../../utils/auditResultReducer";
 import { ACTIONS, ERROR_MESSAGES, UI_MESSAGES } from "../../../utils/constant";
 import { ErrorComponent } from "../../common/ErrorComponent";
@@ -38,25 +42,25 @@ export default function ResultsPanel() {
         // Save results to local storage (which will trigger the UI update via the storage listener)
         saveAuditResultToLocal(response);
       } else {
+        const errorPayload = createAuditError({
+          caller: "runAudit",
+          message: ERROR_MESSAGES.AUDIT_TAB_INACCESSIBLE,
+        });
         dispatch({
           type: "AUDIT_ERROR",
-          payload: {
-            message: ERROR_MESSAGES.AUDIT_TAB_INACCESSIBLE,
-            timestamp: new Date().toISOString(),
-          },
+          payload: errorPayload,
         });
       }
     } catch (err: unknown) {
       console.error("Audit Error:", err);
+      const errorPayload = createAuditError({
+        caller: "runAudit",
+        message:
+          err instanceof Error ? err.message : ERROR_MESSAGES.UNEXPECTED_ERROR,
+      });
       dispatch({
         type: "AUDIT_ERROR",
-        payload: {
-          message:
-            err instanceof Error
-              ? err.message
-              : ERROR_MESSAGES.UNEXPECTED_ERROR,
-          timestamp: new Date().toISOString(),
-        },
+        payload: errorPayload,
       });
     }
   }, []);

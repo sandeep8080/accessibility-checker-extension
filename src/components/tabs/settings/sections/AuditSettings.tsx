@@ -4,7 +4,7 @@ import { CheckCircle2, ShieldCheck } from "lucide-react";
 
 import useAppSettings from "../../../../hooks/useAppSettings";
 import type { ConformanceLvl } from "../../../../types";
-import { UI_MESSAGES } from "../../../../utils/constant";
+import { CTA, UI_MESSAGES } from "../../../../utils/constant";
 import { ToggleButton } from "../../../common/ToggleButton";
 
 export default function AuditSettings() {
@@ -61,7 +61,7 @@ export default function AuditSettings() {
           </div>
         </div>
         <ToggleButton
-          name="best-practice"
+          name={CTA.BEST_PRACTICE}
           isEnabled={includeBestPractices}
           handleToggle={handleToggle}
         />
