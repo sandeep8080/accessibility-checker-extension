@@ -26,6 +26,7 @@ export const ERROR_MESSAGES = {
   AUDIT_TAB_INACCESSIBLE:
     "Unable to access the active tab. Please make sure you are on a valid webpage and try again.",
   AUDIT_SAVE_FAILED: "Failed to save audit results",
+  AUDIT_FAILED_SEND_RUN_AUDIT_MESSAGE: "Failed to send RUN_AUDIT message",
 
   // Tab validation errors
   NO_ACTIVE_TAB: "No active tab found",
@@ -46,6 +47,9 @@ export const ERROR_MESSAGES = {
   ERROR_BOUNDARY_TITLE: "Something went wrong",
   ERROR_BOUNDARY_DESCRIPTION:
     "An unexpected error occurred while rendering the app. Please try again in sometime",
+
+  // History Tab
+  FAILED_TO_SAVE_HISTORY: "Failed to save history",
 } as const;
 
 // ─── UI Messages ─────────────────────────────────────────────────────
@@ -82,4 +86,5 @@ export const UI_MESSAGES = {
 export const CTA = {
   RESET: "Reset all",
   GET_A_FREE_KEY_LINK: "Get a free key",
+  BEST_PRACTICE: "Best practices",
 };

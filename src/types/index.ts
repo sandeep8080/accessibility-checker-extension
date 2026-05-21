@@ -34,6 +34,7 @@ export interface AuditResult {
 }
 
 export interface AuditError {
+  caller: string;
   timestamp: string;
   message: string;
 }

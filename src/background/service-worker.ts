@@ -7,7 +7,11 @@ import type {
   MessageAction,
 } from "../types";
 import { type AppSettings, DEFAULT_SETTINGS } from "../types/settings";
-import { saveAuditResultToLocal, tabValidator } from "../utils";
+import {
+  createAuditError,
+  saveAuditResultToLocal,
+  tabValidator,
+} from "../utils";
 import {
   ACTIONS,
   AI_CONFIG,
@@ -161,15 +165,19 @@ chrome.commands.onCommand.addListener(async (command, tab) => {
       console.log("Keyboard shortcut triggered: Running accessibility audit");
       const response = await chrome.tabs
         .sendMessage(tab?.id, { action: ACTIONS.RUN_AUDIT })
-        .catch((e) => {
-          console.error("Failed to send RUN_AUDIT message:", e);
+        .catch(() => {
+          throw new Error(ERROR_MESSAGES.AUDIT_FAILED_SEND_RUN_AUDIT_MESSAGE);
         });
 
       console.log("Audit result from command run:", response);
       saveAuditResultToLocal(response);
     } else {
+      const errorPayload = createAuditError({
+        caller: "Run Audit keyboard command",
+        message: ERROR_MESSAGES.AUDIT_TAB_INACCESSIBLE,
+      });
       await chrome.storage.local.set({
-        auditError: ERROR_MESSAGES.AUDIT_TAB_INACCESSIBLE,
+        auditError: errorPayload,
         auditInProgress: false,
       });
     }

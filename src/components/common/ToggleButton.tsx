@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export const ToggleButton = ({
   name,
   isEnabled,
@@ -7,28 +5,23 @@ export const ToggleButton = ({
 }: {
   name: string;
   isEnabled: boolean;
-  handleToggle: (isOn: boolean) => void;
+  handleToggle: (isEnabled: boolean) => void;
 }) => {
-  const [isOn, setIsOn] = useState<boolean>(isEnabled);
-  const handleToggleClick = () => {
-    setIsOn(!isOn);
-    handleToggle(!isOn);
-  };
   return (
     <div className="flex items-center gap-3">
       <label
         htmlFor={`${name}-toggle-button`}
         className="text-text-secondary mb-1 block text-sm font-medium"
       >
-        Best practices
+        {name}
       </label>
       <button
         id={`${name}-toggle-button`}
         type="button"
         role="switch"
         aria-checked={isEnabled}
-        className={`bg-bg-tertiary relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors`}
-        onClick={handleToggleClick}
+        className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors ${isEnabled ? "bg-green-500" : "bg-bg-tertiary"}`}
+        onClick={() => handleToggle(!isEnabled)}
         aria-label={name}
       >
         <span
