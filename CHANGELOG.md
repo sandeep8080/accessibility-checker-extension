@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/sandeep8080/accessibility-checker-extension/compare/v1.3.0...v1.3.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* **audit:** align auditError shape and toggle button ([#26](https://github.com/sandeep8080/accessibility-checker-extension/issues/26)) ([28d57be](https://github.com/sandeep8080/accessibility-checker-extension/commit/28d57be5e17f1153ccb3d7a5e67b133075ff875a))
+
 ## [1.3.0](https://github.com/sandeep8080/accessibility-checker-extension/compare/v1.2.0...v1.3.0) (2026-05-19)
 
 
