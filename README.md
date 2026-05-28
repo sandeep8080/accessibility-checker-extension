@@ -15,7 +15,7 @@ This project was built to empower developers to create more accessible web exper
 - **Categorized Results:** Sorts issues into intuitive Severity groups (Errors, Warnings, Notices).
 - **AI-Powered Code Fixes:** Leverages Google Gemini models to explain _why_ an element fails and provides the exact React/HTML snippet to fix it.
 - **Audit History:** Automatically saves your last 50 audits locally, with the ability to export them as raw JSON datasets.
-- **BYOK (Bring Your Own Key):** Secure local storage integration to manage your own AI API keys.
+- **BYOK (Bring Your Own Key):** Your API key is stored locally on your device using Chrome's built-in storage API — never sent to any server except Google's Gemini API.
 
 ---
 
@@ -66,7 +66,7 @@ A Chrome extension isn't a single website—it's essentially three separate envi
 When a user clicks "Get AI Fix" on a specific violation in the Popup UI:
 
 1. **Proxy Request:** The Popup UI sends a \`GET_AI_SUGGESTION\` message (containing the violation details and raw HTML node) to the Background Service Worker.
-2. **Key Retrieval:** The Service Worker pulls your encrypted API Key from \`chrome.storage.local\`.
+2. **Key Retrieval:** The Service Worker retrieves your API Key from `chrome.storage.local` (stored locally on-device, never synced or transmitted to third parties).
 3. **Session Caching:** To save latency and API costs, the Service Worker checks \`chrome.storage.session\` (which is wiped when Chrome closes) to see if we've already generated a fix for this exact violation + HTML combo.
 4. **Prompt Engineering:** If no cache exists, the Service Worker connects to the \`@google/generative-ai\` SDK. It wraps the violation metadata into a strict prompt that demands a structured JSON response containing:
    - \`explanation\`: A human-readable breakdown of the WCAG failure.
@@ -99,7 +99,7 @@ The \`public/manifest.json\` is the "blueprint" that Chrome reads to understand 
 | **axe-core**              | Accessibility Engine | The absolute gold standard of automated accessibility testing. Maintained by Deque Systems, it is the exact same engine that powers Google Lighthouse and Microsoft Accessibility Insights.                                                                                                                  |
 | **Tailwind CSS (v4)**     | Styling              | Allows for rapid prototyping of a premium, dark-mode-first aesthetic without writing bloated CSS files. V4 introduces lightning-fast engine compiling without needing a \`tailwind.config.js\` file.                                                                                                         |
 | **Lucide React**          | Iconography          | Lightweight, crisp, and neutral SVG icons that easily match modern interface design patterns.                                                                                                                                                                                                                |
-| **@google/generative-ai** | AI Integration       | The official SDK to interact with Gemini 3.0 Flash. We chose Gemini Flash because it is incredibly fast (crucial for a snappy UI), accurate for code generation, and currently offers a generous free tier for developers.                                                                                   |
+| **@google/generative-ai** | AI Integration       | The official SDK to interact with Gemini 3.0 flash preview. We chose Gemini Flash because it is incredibly fast (crucial for a snappy UI), accurate for code generation, and currently offers a generous free tier for developers.                                                                           |
 
 ## 📝 Learnings
 
@@ -214,3 +214,10 @@ flowchart TD
 - **Maintainability** — State management logic exists in exactly one place (`chrome.storage.onChanged` listener in `App.tsx`), reducing the surface area for bugs.
 - **Consistent error handling** — All errors are written to `auditError` in storage, and the UI reads them uniformly regardless of the source.
 - **Testability** — Each layer can be tested in isolation: triggers only need to verify they send the right message, storage utilities can be unit-tested against mock storage, and the UI can be tested by simulating storage change events.
+
+## ⚡ Known Limitations
+
+- **AI suggestions require your own API key** — This is a BYOK (Bring Your Own Key) tool. Get a free Gemini API key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
+- **Chrome only** — Firefox and Edge support is on the roadmap.
+- **No automated tests yet** — Core audit logic relies on the battle-tested [axe-core](https://github.com/dequelabs/axe-core) engine. Unit tests are planned.
+- **Single AI provider** — Currently supports Google Gemini only. Multi-provider support (OpenAI, Claude, Groq) is planned.
